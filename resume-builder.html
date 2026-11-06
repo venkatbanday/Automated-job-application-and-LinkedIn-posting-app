@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Resume Tailoring Tool</title>
+<style>
+:root{--bg:#f6f7fb;--cd:#fff;--tx:#1b2433;--mu:#5b6678;--bd:#d9deea;--ac:#1f3864;--a2:#2f5fb3}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1420;--cd:#171e2e;--tx:#e6eaf3;--mu:#9aa6bd;--bd:#2a3550;--ac:#8fb0ee;--a2:#6f9be8}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,Arial,sans-serif;background:var(--bg);color:var(--tx)}
+.w{max-width:900px;margin:0 auto;padding:16px 14px 40px}h1{color:var(--ac);margin:6px 0}h2{font-size:1.05rem;color:var(--ac);margin:0 0 8px}a{color:var(--a2)}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+textarea,input,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}textarea{min-height:140px}
+label{display:block;font-size:.85rem;color:var(--mu);margin:8px 0 3px}button.o{background:transparent;color:var(--a2);border:1px solid var(--a2)}h3{font-size:.95rem;margin:12px 0 4px}button{background:var(--a2);color:#fff;border:0;border-radius:8px;padding:9px 14px;margin:10px 8px 0 0;font:inherit;cursor:pointer}
+.n{font-size:.85rem;color:var(--mu)}.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:640px){.g{grid-template-columns:1fr}}
+#miss .it{margin:6px 0}#miss label{display:block;margin:0;color:var(--tx);font-size:.9rem}#miss input[type=checkbox]{width:auto}#miss input[type=text]{margin-top:4px}
+#pv{background:#fff;color:#000;border:1px solid var(--bd);padding:28px;margin-top:12px;overflow-x:auto}
+@media print{body *{visibility:hidden}#pv,#pv *{visibility:visible}#pv{position:absolute;left:0;top:0;width:100%;border:0;padding:0}}
+</style></head><body><div class="w">
+<h1>Resume Tailoring Tool</h1>
+<p class="n">Upload or paste your resume and a job description, confirm the skills you genuinely have, then download a tailored resume. Free. <a href="index.html">← Job Search Toolkit</a></p>
+
+<div class="c"><h2>1. Your resume</h2><input type="file" id="f" accept=".docx,.pdf,.txt"><label for="cv">…or paste the text</label><textarea id="cv"></textarea></div>
+<div class="c"><h2>2. Job description</h2><textarea id="jd"></textarea><button id="an">Analyse match</button></div>
+
+<div class="c" id="r2" hidden><h2>3. Skills and job words</h2>
+<h3>Skills the job asks for that your resume does not show</h3>
+<p class="n">Tick only the ones that are <b>true for you</b>, and add a short phrase on where you used them. They go into your Key Skills and, where you gave a detail, into a sentence. Unticked ones are never added.</p>
+<div id="miss"></div>
+<h3>Other job words (nothing to tick)</h3><p class="n">These are used automatically to reword your existing sentences where it is truthful: <span id="wds"></span></p>
+<p class="n">Already in your resume: <span id="have"></span></p></div>
+
+<div class="c" id="r3" hidden><h2>4. Create the tailored resume</h2>
+<p class="n">Writing real sentences needs AI. <b>Get a free key in a minute:</b> open aistudio.google.com, click Get API key, paste it below. It stays in this browser and is sent only to Google. <b>No key?</b> Click Copy prompt, paste it into any AI chat (Claude, ChatGPT, Gemini), then paste the reply into the box in step 5.</p>
+<label for="key">Gemini API key</label><input id="key" type="password" autocomplete="off"><label for="mod">AI model</label><input id="mod" value="gemini-3.1-flash-lite">
+<button id="bd">Create with AI</button><button id="cp" class="o">No key? Copy prompt</button><button id="fm" class="o">Just format my resume as it is</button><span id="st" class="n"></span></div>
+
+<div class="c" id="r4" hidden><h2>5. Edit, choose a template, download</h2>
+<div class="g"><div><label for="out">Resume text (# name, ## section, ### Title | Company | Dates, - bullet). Edit freely.</label><textarea id="out" style="min-height:300px"></textarea></div>
+<div><label for="tp">Template</label><select id="tp"><option value="classic">Classic: Arial, navy, centred</option><option value="modern">Modern: Calibri, teal, left-aligned</option><option value="executive">Executive: Georgia, burgundy, centred</option><option value="compact">Compact: Times, black, tight</option></select>
+<p id="cov"></p><button id="dx">Download Word</button><button id="pd">Save as PDF</button><button id="tx" class="o">Download text</button>
+<p class="n">No real ATS gives a percentage, and 100% is neither honest nor needed. The aim is every keyword that is true for you, in plain single-column text.</p></div></div>
+<div id="pv"></div></div>
+
+<div class="c"><h2>About the builder</h2>
+<p><b>Venkateswararao Banday</b>: multi-sector programme and operations leader with the right to work in the UK and India, looking for roles in London. I build apps with AI and share them free. If this helped you and you can refer me to any opportunity, I would be very grateful.</p>
+<p>WhatsApp: <a href="https://wa.me/919962507575">+91 9962507575</a> · <a href="https://wa.me/447391522993">+44 7391 522993</a><br>LinkedIn: <a href="https://www.linkedin.com/in/venkateswararao-banday">linkedin.com/in/venkateswararao-banday</a></p></div>
+</div>
+<script>
+/*C*/
+const STOP=new Set("about after also been before being both can could does each from have here into just more most must only other over same should some such than that their them then there these they this those through under very were what when where which while will with within would your you our are and for the not but all any who has had its may per etc able work working team role job experience years skills strong good ability including new using use make across join looking candidate position company required responsibilities requirements essential desirable apply".split(" "));
+const SK="project management,program management,pmo,portfolio,agile,scrum,kanban,prince2,pmp,six sigma,lean,kaizen,sap,oracle,erp,wms,tms,sql,python,power bi,tableau,excel,jira,ms project,azure,aws,kubernetes,docker,devops,itil,gdpr,iso,procurement,sourcing,vendor management,contract negotiation,supply chain,logistics,warehouse,inventory,demand planning,3pl,freight,customs,incoterms,risk management,change management,stakeholder management,governance,compliance,audit,kpi,okr,budgeting,forecasting,financial modelling,data analysis,analytics,machine learning,ai,api,crm,salesforce,seo,javascript,java,react,git,linux,cloud,cybersecurity,automation,rpa,power automate,continuous improvement,health and safety,coaching,negotiation".split(",");
+const words=t=>(t.toLowerCase().replace(/programme/g,"program").replace(/[^a-z0-9+#&\/\- ]/g," ").match(/[a-z0-9][a-z0-9+#&\/\-]*/g)||[]);
+const has=(t,k)=>(" "+words(t).join(" ")+" ").includes(" "+k+" ");
+const acr=jd=>new Set((jd.match(/\b[A-Z][A-Z0-9+#]{1,6}\b/g)||[]).map(a=>a.toLowerCase()));
+const isSk=(k,ac)=>ac.has(k)||/\d/.test(k)||SK.some(q=>has(k,q));
+function terms(jd){const w=words(jd),u={},b={},o={};
+ w.forEach((x,i)=>{if(x.length>3&&!STOP.has(x))u[x]=(u[x]||0)+1;const y=w[i+1];if(y&&x.length>2&&y.length>2&&!STOP.has(x)&&!STOP.has(y)){const k=x+" "+y;b[k]=(b[k]||0)+1}});
+ Object.entries(b).forEach(([k,v])=>{if(v>=2)o[k]=v*2});
+ Object.entries(u).forEach(([k,v])=>{if(v>=2&&!Object.keys(o).some(q=>q.split(" ").includes(k)))o[k]=v});
+ acr(jd).forEach(k=>{if(!STOP.has(k)&&!o[k]&&!["the","and","for","uk"].includes(k))o[k]=2});return o}
+function toMd(t){const L=t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),H=/^(professional |executive |career |work |key |core )?(summary|profile|objective|experience|employment|education|skills|competencies|certifications?|awards|languages|projects)\b/i,o=["# "+L[0]];let i=1;
+ const c=[];while(i<L.length&&!H.test(L[i])&&c.length<3&&L[i].length<140)c.push(L[i++]);if(c.length)o.push(c.join(" | "));
+ for(;i<L.length;i++){const l=L[i];if(H.test(l)&&l.length<45)o.push("","## "+l.replace(/:$/,"").toUpperCase());
+  else if(/^[•\-*·▪●]\s*/.test(l))o.push("- "+l.replace(/^[•\-*·▪●]\s*/,""));else if(/\b(19|20)\d\d\b/.test(l)&&l.length<140)o.push("### "+l);else o.push(l)}return o.join("\n")}
+const norm=t=>t.replace(/\*\*/g,"").replace(/^\* /gm,"- ").replace(/```[a-z]*/g,"").trim();
+function role(l){const p=l.split("|").map(x=>x.trim());let d="";if(p.length>1&&/\b(19|20)\d\d|present|current/i.test(p[p.length-1]))d=p.pop();return{t:p[0],c:p.slice(1).join(" | "),d}}
+const lab=l=>{const m=l.match(/^([^:]{2,32}):\s+(.+)$/);return m&&!/^https?/i.test(m[1])?[m[1]+": ",m[2]]:null};
+const TPL={classic:{f:"Arial",c:"1F3864",n:30,b:20,al:"center",rule:1},modern:{f:"Calibri",c:"0E7C86",n:38,b:21,al:"left",rule:0},executive:{f:"Georgia",c:"5A1F2B",n:32,b:20,al:"center",rule:1},compact:{f:"Times New Roman",c:"000000",n:26,b:19,al:"center",rule:1}};
+async function docx(md,T){const X=s=>s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+ const R=(t,o={})=>`<w:r><w:rPr><w:rFonts w:ascii="${T.f}" w:hAnsi="${T.f}"/>${o.b?"<w:b/>":""}${o.i?"<w:i/>":""}${o.c?`<w:color w:val="${o.c}"/>`:""}<w:sz w:val="${o.s||T.b}"/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
+ const P=(r,o={})=>`<w:p><w:pPr>${o.bd?`<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="1" w:color="${T.c}"/></w:pBdr>`:""}${o.tab?'<w:tabs><w:tab w:val="right" w:pos="9906"/></w:tabs>':""}<w:spacing w:before="${o.bf||0}" w:after="${o.af??40}"/>${o.ind?'<w:ind w:left="340" w:hanging="220"/>':""}${o.al?`<w:jc w:val="${o.al}"/>`:""}</w:pPr>${r}</w:p>`;
+ let b="",k=0;norm(md).split("\n").forEach(l=>{if(!l.trim())return;k++;
+  if(l.startsWith("# "))b+=P(R(l.slice(2),{b:1,c:T.c,s:T.n}),{al:T.al,af:30});
+  else if(l.startsWith("## "))b+=P(R(l.slice(3).toUpperCase(),{b:1,c:T.c,s:T.b+2}),{bd:T.rule,bf:170,af:70});
+  else if(l.startsWith("### ")){const r=role(l.slice(4));b+=P(R(r.t,{b:1})+(r.d?'<w:r><w:tab/></w:r>'+R(r.d):""),{tab:1,bf:90,af:r.c?0:30});if(r.c)b+=P(R(r.c,{i:1,c:"444444"}),{af:40})}
+  else if(l.startsWith("- "))b+=P(R("• "+l.slice(2)),{ind:1,af:30});
+  else{const q=k>2&&lab(l);b+=P(q?R(q[0],{b:1})+R(q[1]):R(l),{al:k==2?T.al:"",af:k==2?60:40})}});
+ const z=new JSZip(),H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+ z.file("[Content_Types].xml",H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>');
+ z.file("_rels/.rels",H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>');
+ z.file("word/document.xml",H+`<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${b}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="850" w:right="1000" w:bottom="800" w:left="1000" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`);return z}
+/*E*/
+const $=s=>document.querySelector(s);let K={},LAST="";
+const lib=u=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+$("#f").onchange=async e=>{const f=e.target.files[0];if(!f)return;const n=f.name.toLowerCase(),b=await f.arrayBuffer();let t="";
+ try{if(n.endsWith(".docx")){await lib("https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js");t=(await mammoth.extractRawText({arrayBuffer:b})).value}
+ else if(n.endsWith(".pdf")){await lib("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  const d=await pdfjsLib.getDocument({data:b}).promise;for(let i=1;i<=d.numPages;i++){const c=await(await d.getPage(i)).getTextContent();let y=null;c.items.forEach(it=>{const v=it.transform[5];t+=(y!==null&&Math.abs(v-y)>3?"\n":" ")+it.str;y=v});t+="\n"}}
+ else t=new TextDecoder().decode(b)}catch(x){alert("Could not read that file. Please paste the text instead.");return}$("#cv").value=t.trim()};
+let WD=[];
+$("#an").onclick=()=>{const cv=$("#cv").value,jd=$("#jd").value;if(cv.trim().length<50||jd.trim().length<50){alert("Please add your resume and the job description.");return}
+ K=terms(jd);const ac=acr(jd),ks=Object.keys(K).sort((a,b)=>K[b]-K[a]),m=ks.filter(k=>has(cv,k)),x=ks.filter(k=>!m.includes(k)),sk=x.filter(k=>isSk(k,ac)&&(!k.includes(" ")||SK.includes(k))).slice(0,24);WD=x.filter(k=>!isSk(k,ac)).slice(0,18);
+ $("#have").textContent=m.slice(0,30).join(", ")||"none";$("#wds").textContent=WD.join(", ")||"none";const box=$("#miss");box.textContent="";if(!sk.length)box.textContent="No missing skills found.";
+ sk.forEach(k=>{const d=document.createElement("div"),l=document.createElement("label"),i=document.createElement("input"),t=document.createElement("input");d.className="it";d.dataset.k=k;i.type="checkbox";l.append(i," "+k);
+  t.type="text";t.hidden=true;t.placeholder="Where or how did you use it? e.g. led an SAP rollout across 3 sites";i.onchange=()=>t.hidden=!i.checked;d.append(l,t);box.appendChild(d)});
+ $("#r2").hidden=$("#r3").hidden=false};
+async function ai(p,key,model){const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify({contents:[{parts:[{text:p}]}]})});
+ const j=await r.json();if(!r.ok)throw new Error(j.error&&j.error.message||r.status);return j.candidates[0].content.parts.map(q=>q.text||"").join("")}
+const conf=()=>[...document.querySelectorAll("#miss .it")].filter(d=>d.querySelector("input").checked).map(d=>({k:d.dataset.k,e:d.querySelector("input[type=text]").value.trim()}));
+const prompt=cf=>`You are an expert UK CV writer. Rewrite the CV into a polished, professional resume that matches the job description.
+RULES:
+1. Use ONLY facts, employers, dates and numbers in the CV or in the CONFIRMED SKILLS details. Never invent anything.
+2. CONFIRMED SKILLS: add each to KEY SKILLS in the right group. Where the CV or its detail supports it, also use it inside the SUMMARY or an EXPERIENCE bullet as a natural sentence.
+3. JOB WORDS: reword existing sentences to use these naturally where it is truthful. Never add new facts.
+4. Write a 3 to 4 sentence SUMMARY for this exact job. Put the most relevant achievements first, start bullets with strong verbs, keep every existing number, and use fewer bullets for older roles.
+5. KEY SKILLS: 3 to 5 lines in the form "Category: skill, skill, skill". Include the candidate's own strongest skills as well as the confirmed ones (maximum 20 skills).
+6. British English, maximum 2 pages. Never mention a skill that is not in the CV or the confirmed list.
+OUTPUT ONLY: line 1 "# Full Name", line 2 contact details, then "## SUMMARY", "## KEY SKILLS", "## EXPERIENCE" (role lines as "### Title | Company | Dates", bullets as "- text"), "## EDUCATION", "## CERTIFICATIONS".
+CONFIRMED SKILLS:
+${cf.map(c=>"- "+c.k+(c.e?": "+c.e:"")).join("\n")||"none"}
+JOB WORDS: ${WD.join(", ")||"none"}
+CV:
+${$("#cv").value}
+JOB DESCRIPTION:
+${$("#jd").value}`;
+const show=md=>{$("#out").value=norm(md);$("#r4").hidden=false;draw()};
+$("#cp").onclick=async()=>{try{await navigator.clipboard.writeText(prompt(conf()));$("#st").textContent=" Prompt copied. Paste it into an AI chat, then paste the reply into the box in step 5."}catch(e){$("#st").textContent=" Copy failed. Use the Gemini key option."}$("#r4").hidden=false;draw()};
+$("#fm").onclick=()=>{if($("#cv").value.trim().length<50){alert("Add your resume first.");return}show(toMd($("#cv").value));$("#st").textContent=" Formatted without changes. Check the headings and role lines."};
+$("#bd").onclick=async()=>{const key=$("#key").value.trim();if(!key){$("#st").textContent=" Add a free Gemini key above, or use Copy prompt.";return}
+ $("#st").textContent=" Writing with AI…";try{show(await ai(prompt(conf()),key,$("#mod").value.trim()));$("#st").textContent=" Done. Read it carefully and edit anything you cannot defend."}catch(e){$("#st").textContent=" AI failed ("+e.message+"). Check the key or the model name, or use Copy prompt."}};
+function el(t,x,c){const e=document.createElement(t);e.textContent=x;e.style.cssText=c||"";return e}
+function draw(){const md=norm($("#out").value),T=TPL[$("#tp").value],o=document.createElement("div");o.style.cssText=`font:${T.b/2}pt ${T.f};line-height:1.35`;let k=0;
+ const flex=(a,d)=>{const e=el("div","","display:flex;justify-content:space-between;gap:10px;margin-top:6px");e.append(el("b",a),el("span",d));return e};
+ md.split("\n").forEach(l=>{if(!l.trim())return;k++;let e;
+  if(l.startsWith("# "))e=el("div",l.slice(2),`font-size:${T.n/2}pt;font-weight:700;color:#${T.c};text-align:${T.al}`);
+  else if(l.startsWith("## "))e=el("div",l.slice(3).toUpperCase(),`font-weight:700;color:#${T.c};${T.rule?`border-bottom:1px solid #${T.c};`:""}margin:12px 0 4px`);
+  else if(l.startsWith("### ")){const r=role(l.slice(4));e=flex(r.t,r.d);if(r.c){const c=el("div",r.c,"font-style:italic;color:#444");o.appendChild(e);e=c}}
+  else if(l.startsWith("- "))e=el("div","• "+l.slice(2),"padding-left:14px;text-indent:-10px;margin:1px 0");
+  else{const q=k>2&&lab(l);e=el("div","",k==2?`text-align:${T.al}`:"margin:2px 0");if(q)e.append(el("b",q[0]),q[1]);else e.textContent=l}
+  o.appendChild(e)});
+ const pv=$("#pv");pv.textContent="";pv.appendChild(o);const ks=Object.keys(K),n=ks.filter(q=>has(md,q)).length;
+ $("#cov").textContent=ks.length?`Keyword coverage: ${Math.round(100*n/ks.length)}% of the job's keywords appear. Skills you did not confirm are not added.`:""}
+$("#out").oninput=draw;$("#tp").onchange=draw;$("#pd").onclick=()=>window.print();
+const dl=(b,n)=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;a.click()};
+$("#tx").onclick=()=>dl(new Blob([$("#out").value],{type:"text/plain"}),"resume.txt");
+$("#dx").onclick=async()=>{try{if(!window.JSZip)await lib("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");const z=await docx(norm($("#out").value),TPL[$("#tp").value]);dl(await z.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),"resume.docx")}catch(e){alert("Could not create the Word file. Use Save as PDF instead.")}};
+</script></body></html>
