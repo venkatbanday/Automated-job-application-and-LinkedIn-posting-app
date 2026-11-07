@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free LinkedIn Post Maker</title>
+<style>
+:root{--bg:#f6f7fb;--cd:#fff;--tx:#1b2433;--mu:#5b6678;--bd:#d9deea;--ac:#1f3864;--a2:#2f5fb3}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1420;--cd:#171e2e;--tx:#e6eaf3;--mu:#9aa6bd;--bd:#2a3550;--ac:#8fb0ee;--a2:#6f9be8}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,Arial,sans-serif;background:var(--bg);color:var(--tx)}
+.w{max-width:900px;margin:0 auto;padding:16px 14px 40px}h1{color:var(--ac);margin:6px 0}h2{font-size:1.05rem;color:var(--ac);margin:0 0 8px}a{color:var(--a2)}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+textarea,input,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}textarea{min-height:110px}
+label{display:block;font-size:.85rem;color:var(--mu);margin:8px 0 3px}button{background:var(--a2);color:#fff;border:0;border-radius:8px;padding:9px 14px;margin:10px 8px 0 0;font:inherit;cursor:pointer}button.o{background:transparent;color:var(--a2);border:1px solid var(--a2)}
+.n{font-size:.85rem;color:var(--mu)}.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}@media(max-width:640px){.g,.g3{grid-template-columns:1fr}}
+canvas{max-width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;margin-top:10px}.v{border:1px solid var(--bd);border-radius:8px;padding:8px;margin:8px 0}.ok{color:#1d7a46}.bad{color:#b3261e}
+</style></head><body><div class="w">
+<h1>LinkedIn Post Maker</h1>
+<p class="n"><a href="index.html">Toolkit</a> · <a href="resume-builder.html">Resume tool</a> · LinkedIn posts. Write a post, make the image, open LinkedIn with your text ready. Free.</p>
+
+<div class="c"><h2>1. About you</h2>
+<div class="g"><div><label for="nm">Your name</label><input id="nm"></div><div><label for="rl">Your role or headline</label><input id="rl" placeholder="Programme and operations leader"></div>
+<div><label for="ur">LinkedIn profile link or id</label><input id="ur" placeholder="linkedin.com/in/your-id"></div><div><label for="au">Who should read it</label><input id="au" placeholder="Hiring managers and recruiters in London"></div></div>
+<p class="n" id="hd"></p></div>
+
+<div class="c"><h2>2. What to post about</h2>
+<label for="tx">Your real facts, story or idea (the AI uses only what you write here: results, numbers, lessons)</label><textarea id="tx" placeholder="e.g. Six years of zero port detention at Krishnapatnam. What I learned about planning with shipping lines…"></textarea>
+<div class="g3"><div><label for="tp">Post type</label><select id="tp"><option>Insight or lesson</option><option>Personal story</option><option>Practical tips list</option><option>Achievement or milestone</option><option>Open to work (professional)</option><option>Question to start a discussion</option></select></div>
+<div><label for="tn">Tone</label><select id="tn"><option>Professional</option><option>Friendly</option><option>Confident</option></select></div>
+<div><label for="ln">Length</label><select id="ln"><option value="700">Short</option><option value="1200" selected>Medium</option><option value="2000">Long</option></select></div></div>
+<div class="g"><div><label for="hs">Hashtags</label><select id="hs"><option value="3 to 5 relevant hashtags at the end">3 to 5</option><option value="no hashtags">None</option></select></div>
+<div><label for="em">Emojis</label><select id="em"><option value="no emojis">None</option><option value="at most 2 emojis">Light</option></select></div></div>
+<label for="key">Gemini API key (free at aistudio.google.com). It stays in this browser and is sent only to Google.</label><input id="key" type="password" autocomplete="off">
+<label for="mod">AI model</label><input id="mod" value="gemini-3.1-flash-lite">
+<button id="gen">Write 3 versions with AI</button><button id="cpy" class="o">No key? Copy prompt</button><span id="st" class="n"></span><div id="vars"></div></div>
+
+<div class="c"><h2>3. Your post</h2><textarea id="post" style="min-height:200px"></textarea><p class="n"><span id="cnt">0</span> / 3,000 characters. Read it and keep only what is true.</p></div>
+
+<div class="c"><h2>4. Image</h2>
+<div class="g3"><div><label for="st2">Style</label><select id="st2"><option value="navy">Navy</option><option value="teal">Teal</option><option value="light">Light</option><option value="dark">Dark gold</option></select></div>
+<div><label for="sz">Size</label><select id="sz"><option value="1200x627">Landscape 1200×627</option><option value="1080x1080">Square 1080×1080</option><option value="1080x1350">Portrait 1080×1350</option></select></div>
+<div><label for="ph">Your photo (optional)</label><input type="file" id="ph" accept="image/*"></div></div>
+<label for="hl">Image headline</label><input id="hl" maxlength="140"><button id="uf" class="o">Use the post's first line</button>
+<canvas id="cvs" width="1200" height="627"></canvas><br><button id="dl">Download image (PNG)</button></div>
+
+<div class="c"><h2>5. Post on LinkedIn</h2>
+<button id="op">Copy text and open LinkedIn</button><button id="cp2" class="o">Copy text only</button>
+<p class="n">Then attach the downloaded image in LinkedIn and press Post. Apps cannot post for you without an approved LinkedIn integration, and bots risk your account, so this opens LinkedIn's own composer with your text ready.</p></div>
+
+<div class="c"><h2>6. Seven-day content plan</h2><button id="plan">Create plan with AI</button><button id="cplan" class="o">Copy prompt</button><textarea id="cal" style="min-height:220px;margin-top:10px"></textarea></div>
+
+<div class="c"><h2>About the builder</h2>
+<p><b>Venkateswararao Banday</b>: multi-sector programme and operations leader with the right to work in the UK and India, looking for roles in London. I build apps with AI and share them free. If this helped you and you can refer me to any opportunity, I would be very grateful.</p>
+<p>WhatsApp: <a href="https://wa.me/919962507575">+91 9962507575</a> · <a href="https://wa.me/447391522993">+44 7391 522993</a><br>LinkedIn: <a href="https://www.linkedin.com/in/venkateswararao-banday">linkedin.com/in/venkateswararao-banday</a></p></div>
+</div>
+<script>
+/*C*/
+const $=s=>document.querySelector(s);
+const handle=v=>{v=(v||"").trim();const m=v.match(/linkedin\.com\/in\/([^\/?#\s]+)/i);return m?decodeURIComponent(m[1]):/^[\w%.-]{3,100}$/.test(v)?v:""};
+const ST={navy:{a:"#1f3864",b:"#2f6fd0",t:"#ffffff",ac:"#ffd166"},teal:{a:"#0b5d63",b:"#13a3a8",t:"#ffffff",ac:"#ffffff"},light:{a:"#f4f6fb",b:"#dfe7f5",t:"#1b2433",ac:"#2f5fb3"},dark:{a:"#14171f",b:"#262b38",t:"#f2f4f8",ac:"#e0b84c"}};
+function wrap(c,t,w){const o=[];let l="";t.split(/\s+/).forEach(x=>{const q=l?l+" "+x:x;if(c.measureText(q).width>w&&l){o.push(l);l=x}else l=q});o.push(l);return o}
+function card(c,o){const W=o.w,H=o.h;c.width=W;c.height=H;const x=c.getContext("2d"),S=ST[o.style],g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,S.a);g.addColorStop(1,S.b);x.fillStyle=g;x.fillRect(0,0,W,H);
+ const pad=W*.07,mw=W-2*pad;x.fillStyle=S.ac;x.fillRect(pad,H*.12,W*.09,8);
+ const t=o.title||"Your headline here";let fs=W*.075,L;x.textBaseline="top";
+ for(;fs>24;fs-=2){x.font=`700 ${fs}px Arial,sans-serif`;L=wrap(x,t,mw);if(L.length*fs*1.22<H*.52)break}
+ x.fillStyle=S.t;L.forEach((l,i)=>x.fillText(l,pad,H*.17+i*fs*1.22));
+ const r=W*.045,cx=pad+r,cy=H-pad-r;x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
+ if(o.photo){const s=Math.min(o.photo.width,o.photo.height);x.drawImage(o.photo,(o.photo.width-s)/2,(o.photo.height-s)/2,s,s,cx-r,cy-r,2*r,2*r)}
+ else{x.fillStyle=S.ac;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=S.a;x.font=`700 ${r}px Arial`;x.textAlign="center";x.textBaseline="middle";x.fillText((o.name||"?").trim().slice(0,1).toUpperCase(),cx,cy+2);x.textAlign="left"}
+ x.restore();x.textBaseline="top";x.fillStyle=S.t;x.font=`700 ${W*.028}px Arial`;x.fillText(o.name||"",cx+r+W*.02,cy-r*.9);
+ x.font=`${W*.02}px Arial`;x.fillText(o.role||"",cx+r+W*.02,cy-r*.9+W*.038);x.globalAlpha=.75;x.fillText(o.id?"linkedin.com/in/"+o.id:"",cx+r+W*.02,cy-r*.9+W*.064);x.globalAlpha=1}
+const VARS=["name","role","url","aud"];
+function plan(){return `Create a 7-day LinkedIn content plan for ${$("#nm").value||"me"}, ${$("#rl").value||"a professional"}. Audience: ${$("#au").value||"recruiters and hiring managers"}. Goal: be visible and get referrals and job opportunities. Use only themes from these facts: ${$("#tx").value||"(none given: keep ideas general and ask me for facts)"}. For each day give: post type, a hook line, a 2-sentence outline, and a call to action. Never invent results or numbers. British English. Plain text.`}
+function pr(){return `You are a LinkedIn ghostwriter for ${$("#nm").value||"the author"}, ${$("#rl").value||"a professional"}. Audience: ${$("#au").value||"recruiters and hiring managers"}.
+Write 3 DIFFERENT LinkedIn posts. Type: ${$("#tp").value}. Tone: ${$("#tn").value}. About ${$("#ln").value} characters each.
+RULES: the first line is a strong, honest hook under 120 characters. Short paragraphs with blank lines between them. Use ONLY the facts below; never invent numbers, clients, employers or results. End with a question or a clear call to action. Use ${$("#hs").value}. Use ${$("#em").value}. British English.
+FACTS AND IDEA:
+${$("#tx").value||"(none given)"}
+OUTPUT: only the 3 posts, separated by a line containing only =====`}
+/*E*/
+let PH=null;const store=(k,v)=>{try{localStorage.setItem("lp_"+k,v)}catch(e){}};
+["nm","rl","ur","au"].forEach(i=>{try{const v=localStorage.getItem("lp_"+i);if(v)$("#"+i).value=v}catch(e){}$("#"+i).oninput=()=>{store(i,$("#"+i).value);who();img()}});
+function who(){const h=handle($("#ur").value);$("#hd").textContent=h?"LinkedIn id found: "+h:"Add your LinkedIn profile link so it appears on your image.";$("#hd").className="n "+(h?"ok":"")}
+function img(){const [w,h]=$("#sz").value.split("x").map(Number);card($("#cvs"),{w,h,style:$("#st2").value,title:$("#hl").value.trim(),name:$("#nm").value.trim(),role:$("#rl").value.trim(),id:handle($("#ur").value),photo:PH})}
+["st2","sz"].forEach(i=>$("#"+i).onchange=img);$("#hl").oninput=img;
+$("#ph").onchange=e=>{const f=e.target.files[0];if(!f)return;const i=new Image();i.onload=()=>{PH=i;img()};i.src=URL.createObjectURL(f)};
+const first=t=>(t.split("\n").find(l=>l.trim())||"").trim().slice(0,110);
+$("#uf").onclick=()=>{$("#hl").value=first($("#post").value);img()};
+$("#post").oninput=()=>{$("#cnt").textContent=$("#post").value.length;$("#cnt").className=$("#post").value.length>3000?"bad":""};
+const setPost=t=>{$("#post").value=t.trim();$("#post").oninput();if(!$("#hl").value)$("#hl").value=first(t);img();$("#post").scrollIntoView({behavior:"smooth"})};
+async function ai(p,key,model){const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify({contents:[{parts:[{text:p}]}]})});
+ const j=await r.json();if(!r.ok)throw new Error(j.error&&j.error.message||r.status);return j.candidates[0].content.parts.map(q=>q.text||"").join("")}
+const cp=async(t,m)=>{try{await navigator.clipboard.writeText(t);$("#st").textContent=m||" Copied."}catch(e){$("#st").textContent=" Copy failed. Select the text and copy it yourself."}};
+$("#gen").onclick=async()=>{const key=$("#key").value.trim();if(!$("#tx").value.trim()){alert("Add your facts or idea first.");return}if(!key){$("#st").textContent=" Add a free Gemini key, or use Copy prompt.";return}
+ $("#st").textContent=" Writing…";try{const o=(await ai(pr(),key,$("#mod").value.trim())).replace(/```[a-z]*/g,"").split(/^\s*={3,}\s*$/m).map(x=>x.trim()).filter(Boolean),b=$("#vars");b.textContent="";
+  o.forEach((t,i)=>{const d=document.createElement("div");d.className="v";const p=document.createElement("div");p.style.whiteSpace="pre-wrap";p.textContent=t;const u=document.createElement("button");u.className="o";u.textContent="Use version "+(i+1);u.onclick=()=>setPost(t);d.append(p,u);b.appendChild(d)});$("#st").textContent=" Pick a version below."}
+ catch(e){$("#st").textContent=" AI failed ("+e.message+"). Check the key or model name, or use Copy prompt."}};
+$("#cpy").onclick=()=>cp(pr(),"Prompt copied. Paste it into any AI chat, then paste the post you like into step 3.");
+$("#plan").onclick=async()=>{const key=$("#key").value.trim();if(!key){$("#st").textContent=" Add a free Gemini key, or use Copy prompt.";return}$("#cal").value="Writing…";try{$("#cal").value=(await ai(plan(),key,$("#mod").value.trim())).trim()}catch(e){$("#cal").value="AI failed: "+e.message}};
+$("#cplan").onclick=()=>cp(plan(),"Prompt copied.");
+$("#cp2").onclick=()=>cp($("#post").value,"Post text copied.");
+$("#op").onclick=()=>{const t=$("#post").value;if(!t.trim()){alert("Write or choose a post first.");return}cp(t," Text copied. If LinkedIn opens empty, paste with Ctrl+V.");const q=encodeURIComponent(t);window.open("https://www.linkedin.com/feed/?shareActive=true"+(q.length<1800?"&text="+q:""),"_blank","noopener")};
+$("#dl").onclick=()=>$("#cvs").toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="linkedin-post.png";a.click()});
+who();img();
+</script></body></html>
