@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Resume Tailoring Tool</title>
+<style>
+:root{--bg:#f6f7fb;--cd:#fff;--tx:#1b2433;--mu:#5b6678;--bd:#d9deea;--ac:#1f3864;--a2:#2f5fb3}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1420;--cd:#171e2e;--tx:#e6eaf3;--mu:#9aa6bd;--bd:#2a3550;--ac:#8fb0ee;--a2:#6f9be8}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,Arial,sans-serif;background:var(--bg);color:var(--tx)}
+.w{max-width:900px;margin:0 auto;padding:16px 14px 40px}h1{color:var(--ac);margin:6px 0}h2{font-size:1.05rem;color:var(--ac);margin:0 0 8px}a{color:var(--a2)}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+textarea,input,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}textarea{min-height:140px}
+label{display:block;font-size:.85rem;color:var(--mu);margin:8px 0 3px}button.o{background:transparent;color:var(--a2);border:1px solid var(--a2)}h3{font-size:.95rem;margin:12px 0 4px}button{background:var(--a2);color:#fff;border:0;border-radius:8px;padding:9px 14px;margin:10px 8px 0 0;font:inherit;cursor:pointer}
+.n{font-size:.85rem;color:var(--mu)}.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:640px){.g{grid-template-columns:1fr}}
+#miss .it{margin:6px 0}#miss label{display:block;margin:0;color:var(--tx);font-size:.9rem}#miss input[type=checkbox]{width:auto}#miss input[type=text]{margin-top:4px}
+#pv{background:#fff;color:#000;border:1px solid var(--bd);padding:28px;margin-top:12px;overflow-x:auto}
+#lv{background:#fff;color:#000;border:1px solid var(--bd);padding:28px;margin-top:12px}
+@media print{body *{visibility:hidden}#pv,#pv *{visibility:visible}#pv{position:absolute;left:0;top:0;width:100%;border:0;padding:0}body.pl #pv,body.pl #pv *{display:none}body.pl #lv,body.pl #lv *{visibility:visible}body.pl #lv{position:absolute;left:0;top:0;width:100%;border:0;padding:0}}
+</style></head><body><div class="w">
+<h1>Resume Tailoring Tool</h1>
+<p class="n"><a href="index.html">Toolkit</a> · Resume tool · <a href="linkedin-post.html">LinkedIn posts</a></p><p class="n">Upload or paste your resume and a job description, confirm the skills you genuinely have, then download a tailored resume. Free. <a href="index.html">← Job Search Toolkit</a></p>
+
+<div class="c"><h2>1. Your resume</h2><input type="file" id="f" accept=".docx,.pdf,.txt"><label for="cv">…or paste the text</label><textarea id="cv"></textarea></div>
+<div class="c"><h2>2. Job description</h2><textarea id="jd"></textarea><label for="jt">Job title you are applying for (optional; the tool guesses it from the first line)</label><input id="jt"><button id="an">Analyse and rewrite my resume</button></div>
+
+<div class="c" id="r2" hidden><h2>3. Your match and your skills</h2>
+<p id="sc" style="font-size:1.05rem;font-weight:600"></p>
+<h3>Skills the job asks for that your resume does not show</h3>
+<p class="n">Tick the ones you genuinely have. The tool rewrites a matching sentence in your resume to include each one and adds it to Key Skills. Only tick what you could talk about at interview.</p>
+<div id="miss"></div><button id="ta" class="o">I have all of these: tick all</button><button id="rw2">Rewrite again with my ticks</button>
+<h3>Other job words</h3><p class="n">Used to reorder and align your sentences: <span id="wds"></span></p>
+<p class="n">Already in your resume: <span id="have"></span></p></div>
+
+<div class="c" id="r3" hidden><h2>4. Rewrite</h2>
+<p class="n"><b>Rewrite my resume now</b> works instantly with no key: it writes a tailored summary, puts your most relevant achievements first, weaves your ticked skills into your sentences and builds Key Skills. For smoother wording, add a free Gemini key (aistudio.google.com) and click <b>Polish with AI</b>, or copy the prompt into any AI chat and paste the reply into the box below.</p>
+<label for="key">Gemini API key (optional)</label><input id="key" type="password" autocomplete="off"><label for="mod">AI model</label><input id="mod" value="gemini-3.1-flash-lite">
+<button id="rw">Rewrite my resume now</button><button id="bd" class="o">Polish with AI</button><button id="cp" class="o">Copy AI prompt</button><span id="st" class="n"></span></div>
+
+<div class="c" id="r4" hidden><h2>5. Your rewritten resume: edit, choose a template, download</h2>
+<div class="g"><div><label for="out">Resume text (# name, ## section, ### Title | Company | Dates, - bullet). Edit freely.</label><textarea id="out" style="min-height:300px"></textarea></div>
+<div><label for="tp">Template</label><select id="tp"><option value="classic">Classic: Arial, navy, centred</option><option value="modern">Modern: Calibri, teal, left-aligned</option><option value="executive">Executive: Georgia, burgundy, centred</option><option value="compact">Compact: Times, black, tight</option></select>
+<p id="cov"></p><ul id="ck" class="n"></ul><p id="gp" class="n"></p><button id="dx">Download Word</button><button id="pd">Save as PDF</button><button id="tx" class="o">Download text</button>
+<p class="n">No real ATS gives a percentage, and 100% is neither honest nor needed. The aim is every keyword that is true for you, in plain single-column text.</p></div></div>
+<div id="pv"></div></div>
+
+<div class="c" id="r5" hidden><h2>6. Cover letter</h2>
+<p class="n">Written from your rewritten resume and the job description. Edit it, then download.</p>
+<label for="co">Company, hiring manager (optional, e.g. Acme Ltd, Jane Smith)</label><input id="co">
+<button id="cl">Generate cover letter</button><button id="cla" class="o">Polish with AI</button><button id="clp" class="o">Copy AI prompt</button><span id="s5" class="n"></span>
+<textarea id="lt" style="min-height:240px;margin-top:10px"></textarea>
+<button id="ldx">Download Word</button><button id="lpd">Save as PDF</button><div id="lv"></div></div>
+
+<div class="c" id="r6" hidden><h2>7. Interview preparation and videos</h2>
+<p class="n">Likely questions for this job with answer outlines built from your own resume.</p>
+<button id="iv">Generate interview prep</button><button id="iva" class="o">Polish with AI</button><button id="ivp" class="o">Copy AI prompt</button><span id="s6" class="n"></span>
+<textarea id="it" style="min-height:260px;margin-top:10px"></textarea>
+<h3>Watch: how to attend an interview, by position</h3><p class="n">Each link opens a YouTube search for that position.</p><div class="g" id="vl"></div><div id="vg"></div></div>
+
+<div class="c"><h2>About the builder</h2>
+<p><b>Venkateswararao Banday</b>: multi-sector programme and operations leader with the right to work in the UK and India, looking for roles in London. I build apps with AI and share them free. If this helped you and you can refer me to any opportunity, I would be very grateful.</p>
+<p>WhatsApp: <a href="https://wa.me/919962507575">+91 9962507575</a> · <a href="https://wa.me/447391522993">+44 7391 522993</a><br>LinkedIn: <a href="https://www.linkedin.com/in/venkateswararao-banday">linkedin.com/in/venkateswararao-banday</a></p></div>
+</div>
+<script>
+/*C*/
+const STOP=new Set("about after also been before being both can could does each from have here into just more most must only other over same should some such than that their them then there these they this those through under very were what when where which while will with within would your you our are and for the not but all any who has had its may per etc able work working team role job experience years skills strong good ability including new using use make across join looking candidate position company required responsibilities requirements essential desirable apply".split(" "));
+const SK="project management,program management,pmo,portfolio,agile,scrum,kanban,prince2,pmp,six sigma,lean,kaizen,sap,oracle,erp,wms,tms,sql,python,power bi,tableau,excel,jira,ms project,azure,aws,kubernetes,docker,devops,itil,gdpr,iso,procurement,sourcing,vendor management,contract negotiation,supply chain,logistics,warehouse,inventory,demand planning,3pl,freight,customs,incoterms,risk management,change management,stakeholder management,governance,compliance,audit,kpi,okr,budgeting,forecasting,financial modelling,data analysis,analytics,machine learning,ai,api,crm,salesforce,seo,javascript,java,react,git,linux,cloud,cybersecurity,automation,rpa,power automate,continuous improvement,health and safety,coaching,negotiation".split(",");
+const words=t=>(t.toLowerCase().replace(/programme/g,"program").replace(/[^a-z0-9+#&\/\- ]/g," ").match(/[a-z0-9][a-z0-9+#&\/\-]*/g)||[]);
+const has=(t,k)=>(" "+words(t).join(" ")+" ").includes(" "+k+" ");
+const acr=jd=>new Set((jd.match(/\b[A-Z][A-Z0-9+#]{1,6}\b/g)||[]).map(a=>a.toLowerCase()));
+const isSk=(k,ac)=>ac.has(k)||/\d/.test(k)||SK.some(q=>has(k,q));
+function terms(jd){const w=words(jd),u={},b={},o={};
+ w.forEach((x,i)=>{if(x.length>3&&!STOP.has(x))u[x]=(u[x]||0)+1;const y=w[i+1];if(y&&x.length>2&&y.length>2&&!STOP.has(x)&&!STOP.has(y)){if(!/^(senior|junior|manager|lead|role|level|time|ability|strong|team|looking|candidate)$/.test(x)&&!/^(senior|junior|manager|lead|role|level|time|ability|strong|team)$/.test(y)){const k=x+" "+y;b[k]=(b[k]||0)+1}}});
+ Object.entries(b).forEach(([k,v])=>{if(v>=2)o[k]=v*2});
+ Object.entries(u).forEach(([k,v])=>{if(v>=2&&!Object.keys(o).some(q=>q.split(" ").includes(k)))o[k]=v});
+ acr(jd).forEach(k=>{if(!STOP.has(k)&&!o[k]&&!["the","and","for","uk"].includes(k))o[k]=2});
+ SK.forEach(q=>{if(!o[q]&&has(jd,q))o[q]=3});
+ Object.keys(o).forEach(k=>{if(!k.includes(" ")&&Object.keys(o).some(q=>q!=k&&q.split(" ").includes(k)))delete o[k]});return o}
+const HD=/^(professional |executive |career |work |key |core |technical )?(summary|profile|objective|experience|employment|education|skills|competencies|strengths|certifications?|awards|achievements|languages|projects|training|references)\b/i,BU=/^[•\-*·▪●]\s*/,YR=/\b(19|20)\d\d\b/;
+const tidy=t=>t.replace(/(\w)\s+-\s+(?=[a-z])/g,"$1-").replace(/(\d)\s+\+/g,"$1+").replace(/\b([A-Z]?[a-z]{1,3}) - ([A-Za-z]{2,6})\b/g,"$1-$2").replace(/[ \t]{2,}/g," ").replace(/\s+([,.;:)])/g,"$1").replace(/\(\s+/g,"(").replace(/\|\s*\|/g,"|");
+function reflow(t){const o=[];t.split(/\r?\n/).map(x=>tidy(x.trim())).filter(Boolean).forEach(l=>{const q=o[o.length-1],open=q&&(q.match(/\(/g)||[]).length>(q.match(/\)/g)||[]).length,
+  wrap=q&&!HD.test(l)&&!BU.test(l)&&!YR.test(l)&&!/^[A-Z][A-Z &,\/]{3,}$/.test(l)&&q.length>70&&!/[.:;!?)]$/.test(q);
+ if(q&&(open||/^[a-z),;]/.test(l)||wrap))o[o.length-1]=q+" "+l;else o.push(l)});return o}
+function toMd(t){const L=reflow(t),o=["# "+L[0]];let i=1;const c=[];
+ while(i<L.length&&!HD.test(L[i])&&c.length<3&&L[i].length<260&&!BU.test(L[i]))c.push(L[i++]);if(c.length)o.push(c.join(" | "));
+ for(;i<L.length;i++){const l=L[i];
+  if((HD.test(l)&&l.length<45)||/^[A-Z][A-Z &,\/]{3,40}$/.test(l))o.push("","## "+l.replace(/:$/,"").toUpperCase());
+  else if(BU.test(l))o.push("- "+l.replace(BU,""));
+  else if(YR.test(l)&&l.length<220&&l.split(" ").length<32){const q=o[o.length-1];if(q&&!/^(#|-)/.test(q)&&q.length<110&&!YR.test(q)){o.pop();o.push("### "+q+" | "+l)}else o.push("### "+l)}
+  else o.push(l)}return o.join("\n")}
+const norm=t=>t.replace(/\*\*/g,"").replace(/^\* /gm,"- ").replace(/```[a-z]*/g,"").trim();
+function role(l){const p=l.split("|").map(x=>x.trim()),i=p.findIndex(x=>/\b(19|20)\d\d|present|current/i.test(x)&&x.length<45),d=i>0?p.splice(i,1)[0]:"";return{t:p[0],c:p.slice(1).join(" | "),d}}
+const lab=l=>{const m=l.match(/^([^:]{2,32}):\s+(.+)$/);return m&&!/^https?/i.test(m[1])?[m[1]+": ",m[2]]:null};
+const TPL={classic:{f:"Arial",c:"1F3864",n:30,b:20,al:"center",rule:1},modern:{f:"Calibri",c:"0E7C86",n:38,b:21,al:"left",rule:0},executive:{f:"Georgia",c:"5A1F2B",n:32,b:20,al:"center",rule:1},compact:{f:"Times New Roman",c:"000000",n:26,b:19,al:"center",rule:1}};
+async function docx(md,T,L){const X=s=>s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+ const R=(t,o={})=>`<w:r><w:rPr><w:rFonts w:ascii="${T.f}" w:hAnsi="${T.f}"/>${o.b?"<w:b/>":""}${o.i?"<w:i/>":""}${o.c?`<w:color w:val="${o.c}"/>`:""}<w:sz w:val="${o.s||T.b}"/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
+ const P=(r,o={})=>`<w:p><w:pPr>${o.bd?`<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="1" w:color="${T.c}"/></w:pBdr>`:""}${o.tab?'<w:tabs><w:tab w:val="right" w:pos="9906"/></w:tabs>':""}<w:spacing w:before="${o.bf||0}" w:after="${o.af??40}"/>${o.ind?'<w:ind w:left="340" w:hanging="220"/>':""}${o.al?`<w:jc w:val="${o.al}"/>`:""}</w:pPr>${r}</w:p>`;
+ let b="",k=0;norm(md).split("\n").forEach(l=>{if(!l.trim())return;k++;
+  if(l.startsWith("# "))b+=P(R(l.slice(2),{b:1,c:T.c,s:T.n}),{al:T.al,af:30});
+  else if(l.startsWith("## "))b+=P(R(l.slice(3).toUpperCase(),{b:1,c:T.c,s:T.b+2}),{bd:T.rule,bf:170,af:70});
+  else if(l.startsWith("### ")){const r=role(l.slice(4));b+=P(R(r.t,{b:1})+(r.d?'<w:r><w:tab/></w:r>'+R(r.d):""),{tab:1,bf:90,af:r.c?0:30});if(r.c)b+=P(R(r.c,{i:1,c:"444444"}),{af:40})}
+  else if(l.startsWith("- "))b+=P(R("• "+l.slice(2)),{ind:1,af:30});
+  else{const q=!L&&k>2&&lab(l);b+=P(q?R(q[0],{b:1})+R(q[1]):R(l),{al:k==2?T.al:"",af:k==2?60:L&&k>=3?150:40})}});
+ const z=new JSZip(),H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+ z.file("[Content_Types].xml",H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>');
+ z.file("_rels/.rels",H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>');
+ z.file("word/document.xml",H+`<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${b}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="850" w:right="1000" w:bottom="800" w:left="1000" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`);return z}
+const cap=t=>t?t[0].toUpperCase()+t.slice(1):t,low=t=>t&&!/^[A-Z]{2}/.test(t)?t[0].toLowerCase()+t.slice(1):t,ACR=["bi","sql","erp","sap","wms","tms","api","crm","aws","seo","rpa","ai","kpi","okr","itil","pmo","pmp","gdpr","cha","sop","prince2"],dsp=(k,ac)=>k.split(" ").map(w=>ac.has(w)||ACR.includes(w)?w.toUpperCase():w).join(" "),nice=k=>k.split(" ").map(w=>ACR.includes(w)?w.toUpperCase():w[0].toUpperCase()+w.slice(1)).join(" ");
+const list=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
+const sents=t=>(t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t]).map(x=>x.trim()).filter(Boolean);
+const yrs=t=>(t.match(/(\d{2})\+?\s*years/i)||[])[1];
+function guessTitle(jd){const f=jd.split(/\r?\n/).map(x=>x.trim()).find(x=>x),m=jd.match(/(?:job title|position|role)\s*[:\-–]\s*([^\n]{3,70})/i);return(m?m[1]:f&&f.length<=70&&!/^(about|job description|overview|we are|who we)/i.test(f)?f:"").replace(/\s*[|\-–(@,].*$/,"").trim()}
+const TL=/^(sap|oracle|jira|power bi|tableau|sql|excel|python|azure|aws|salesforce|erp|wms|tms|power automate)$/i,MT=/^(agile|scrum|kanban|lean|six sigma|prince2|itil|devops|waterfall|kaizen)$/i;
+const WV=(b,ks)=>{const e=/\.$/.test(b),c=e?b.slice(0,-1):b,n=ks.map(nice);return c+(ks.every(k=>TL.test(k))?", supported by "+list(n):ks.every(k=>MT.test(k))?", using "+list(n)+" practices":", applying "+list(n)+" skills")+(e?".":"")};
+function rewrite(md,conf,jd,cvT,K){const ks=Object.keys(K),ac=acr(jd),sc=t=>ks.reduce((s,k)=>s+(has(t,k)?K[k]:0),0),L=md.split("\n"),i0=L.findIndex(l=>l.startsWith("## ")),head=L.slice(0,i0<0?L.length:i0),S=[];
+ (i0<0?[]:L.slice(i0)).forEach(l=>{if(l.startsWith("## "))S.push({h:l.slice(3).trim(),l:[]});else S[S.length-1].l.push(l)});
+ const tk=conf.map(c=>c.k).filter(k=>!has(cvT,k)),X=S.filter(s=>/EXPERIENCE|EMPLOYMENT/i.test(s.h));
+ X.forEach(s=>{const o=[];let g=[];const f=()=>{g.map(b=>[b,sc(b)]).sort((a,b)=>b[1]-a[1]).slice(0,8).forEach(q=>o.push(q[0]));g=[]};s.l.forEach(l=>{if(l.startsWith("- "))g.push(l);else{f();o.push(l)}});f();s.l=o});
+ const B=[];X.forEach(s=>s.l.forEach((l,i)=>{if(l.startsWith("- "))B.push({s,i,n:0})}));
+ tk.forEach(k=>{const m=jd.split(/[.!?\n]/).find(x=>x.toLowerCase().includes(k)),c=new Set(words(m||k).filter(w=>w.length>3&&!STOP.has(w)&&w!=k));let best=null,bs=-1;
+  B.forEach(b=>{if(b.n>=2)return;const w=new Set(words(b.s.l[b.i]));let v=0;c.forEach(x=>{if(w.has(x))v++});if(v>bs){bs=v;best=b}});if(best&&bs>0){(best.ks=best.ks||[]).push(k);best.n++}});
+ B.forEach(b=>{if(b.ks)b.s.l[b.i]=WV(b.s.l[b.i],b.ks)});
+ const jt=guessTitle(jd),y=yrs(cvT),have0=ks.filter(k=>isSk(k,ac)&&has(cvT,k)).sort((a,b)=>K[b]-K[a]),have=[...have0,...tk],top=have0.slice(0,4).map(k=>dsp(k,ac));
+ const su=S.find(s=>/SUMMARY|PROFILE|OBJECTIVE/i.test(s.h)),old=su?sents(su.l.join(" ").trim()).map(t=>[t,sc(t)]).sort((a,b)=>b[1]-a[1]).slice(0,3).map(q=>q[0]):[];
+ const nsum=(jt?"Experienced professional seeking a "+jt+" role, with ":"Experienced professional with ")+(y?y+"+ years' ":"")+"experience in "+(top.length?list(top):"operations and delivery")+". "+old.join(" ");
+ const sk=S.find(s=>/SKILL|COMPETENC|STRENGTH/i.test(s.h)),skl=["Core skills for this role: "+have.slice(0,14).map(nice).join(", ")].concat(sk?sk.l.filter(l=>l.trim()):[]);
+ const o=[...head,"","## SUMMARY",nsum.trim(),"","## KEY SKILLS",...skl,""];X.forEach(s=>o.push("## "+s.h,...s.l,""));S.filter(s=>s!==su&&s!==sk&&!X.includes(s)).forEach(s=>o.push("## "+s.h,...s.l,""));
+ return o.join("\n").replace(/\n{3,}/g,"\n\n").trim()}
+function bullets(md){const o=[];let r="",x=0;md.split("\n").forEach(l=>{if(l.startsWith("## "))x=/EXPERIENCE|EMPLOYMENT/i.test(l);else if(l.startsWith("### "))r=l.slice(4);else if(x&&l.startsWith("- "))o.push({b:l.slice(2).trim(),r})});return o}
+const fp=b=>{b=b.replace(/\.$/,"");return/(ed|^Led|^Ran|^Built|^Drove|^Cut|^Won|^Set|^Grew)$/.test(b.split(" ")[0])?"I "+low(b):"In my work, "+low(b)};
+function letterRB(md,jd,cvT,K,co,mgr){const ks=Object.keys(K),ac=acr(jd),sc=t=>ks.reduce((s,k)=>s+(has(t,k)?K[k]:0),0),bs=bullets(md).map(x=>({...x,v:sc(x.b)+(/\d/.test(x.b)?3:0)})).sort((a,b)=>b.v-a.v),jt=guessTitle(jd),y=yrs(cvT),have=ks.filter(k=>has(cvT,k)).sort((a,b)=>K[b]-K[a]),sk=have.filter(k=>isSk(k,ac)),top=(sk.length?sk:have).slice(0,3).map(k=>dsp(k,ac));
+ return[`Dear ${mgr||"Hiring Manager"},`,`I am writing to apply for the ${jt||"advertised"} position${co?" at "+co:""}. With ${y?y+" years of":"extensive"} experience in ${top.length?list(top):"this field"}, I can contribute from my first day.`,
+ bs.length?`Two examples of my results: ${fp(bs[0].b)}.${bs[1]?" "+fp(bs[1].b)+".":""}`:"",
+ `Your advertisement asks for ${list((sk.length?sk:have).slice(0,4).map(k=>dsp(k,ac)))}. My background covers these directly, and I enjoy turning plans into measurable results.`,
+ "I would welcome the chance to discuss how I can help your team. Thank you for your time and consideration.",`Yours sincerely,\n${(md.split("\n")[0]||"").replace(/^#\s*/,"")}`].filter(Boolean).join("\n\n")}
+function interviewRB(md,jd,cvT,K){const ks=Object.keys(K),ac=acr(jd),sc=t=>ks.reduce((s,k)=>s+(has(t,k)?K[k]:0),0),bl=bullets(md),jt=guessTitle(jd)||"this role",y=yrs(cvT),have=ks.filter(k=>isSk(k,ac)&&has(cvT,k)).sort((a,b)=>K[b]-K[a]).slice(0,5);
+ const best=k=>bl.map(x=>({...x,v:(has(x.b,k)?50:0)+sc(x.b)})).sort((a,b)=>b.v-a.v)[0],out=["INTERVIEW PREPARATION: "+jt.toUpperCase(),"","Answer each question in about 90 seconds. Lead with the result and use your numbers (STAR: Situation, Task, Action, Result).",""];let n=1;const q=(a,b)=>{out.push(n++ +". "+a,b,"")},b0=best(have[0]||"")||bl[0];
+ q("Tell me about yourself.",`Outline: ${y?y+" years in ":"your experience in "}${list(have.slice(0,3).map(k=>dsp(k,ac)))||"your field"}; your latest role (${bl[0]&&bl[0].r||"your latest role"}); one headline result: ${b0?b0.b:"add your best result"}; why this role.`);
+ q(`Why do you want this ${jt} position?`,"Outline: two things in the job description that match your strengths, one thing you admire about the company, and what you will deliver in the first 90 days.");
+ have.forEach(k=>{const b=best(k);q(`Tell me about a time you used ${dsp(k,ac)} to deliver a result.`,b?`Situation and Task: ${b.r||"your relevant role"}. Action and Result: ${b.b}`:"Pick your best example and follow STAR.")});
+ if(/career break|relocat|not in full-time|professional development/i.test(cvT))q("There is a gap in your recent employment. What have you done, and are you ready to return?","Outline: be brief and honest about why (for example relocation and family), how you kept your skills current (certifications, advisory or temporary work), and that you are ready and available now.");
+ q("Tell me about a time something went wrong. What did you do?","Choose a real example from your resume where you recovered a delay, cost or risk, and finish with what you changed afterwards.");q("What is your biggest weakness?","Choose a real, minor weakness, the step you took to improve it, and the result.");
+ out.push("QUESTIONS TO ASK THEM","- What would success look like in the first 90 days?","- What are the biggest challenges the team faces now?","- How is performance measured for this role?","- What does the process look like from here?");return out.join("\n")}
+const POS=["Programme / Project Manager","Operations Manager","Supply Chain / Logistics Manager","Procurement / Buyer","Warehouse Manager","Software Engineer","Data Analyst","Business Analyst","Product Manager","Sales / Account Manager","Customer Service","HR / Recruiter","Accountant / Finance","Marketing Manager","Teacher","Nurse / Healthcare","Graduate / Entry level","Director / Senior leader"];
+/*E*/
+const $=s=>document.querySelector(s);let K={},LAST="";
+const lib=u=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+$("#f").onchange=async e=>{const f=e.target.files[0];if(!f)return;const n=f.name.toLowerCase(),b=await f.arrayBuffer();let t="";
+ try{if(n.endsWith(".docx")){await lib("https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js");t=(await mammoth.extractRawText({arrayBuffer:b})).value}
+ else if(n.endsWith(".pdf")){await lib("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  const d=await pdfjsLib.getDocument({data:b}).promise;for(let i=1;i<=d.numPages;i++){const c=await(await d.getPage(i)).getTextContent();let y=null;c.items.forEach(it=>{const v=it.transform[5];t+=(y!==null&&Math.abs(v-y)>3?"\n":" ")+it.str;y=v});t+="\n"}}
+ else t=new TextDecoder().decode(b)}catch(x){alert("Could not read that file. Please paste the text instead.");return}$("#cv").value=t.trim()};
+let WD=[],SKL=[],COV0=0;
+const cov=t=>{const ks=Object.keys(K),tot=ks.reduce((q,k)=>q+K[k],0);return tot?Math.round(100*ks.filter(k=>has(t,k)).reduce((q,k)=>q+K[k],0)/tot):0};
+const conf=()=>[...document.querySelectorAll("#miss .it")].filter(d=>d.querySelector("input").checked).map(d=>({k:d.dataset.k,e:d.querySelector("input[type=text]").value.trim()}));
+function el(t,x,c){const e=document.createElement(t);e.textContent=x;e.style.cssText=c||"";return e}
+$("#an").onclick=()=>{const cv=$("#cv").value,jd=$("#jd").value;if(cv.trim().length<50||jd.trim().length<50){alert("Please add your resume and the job description.");return}
+ K=terms(jd);const ac=acr(jd),ks=Object.keys(K).sort((a,b)=>K[b]-K[a]),m=ks.filter(k=>has(cv,k)),x=ks.filter(k=>!m.includes(k)),sk=x.filter(k=>isSk(k,ac)&&(!k.includes(" ")||SK.includes(k))).slice(0,24);WD=x.filter(k=>!isSk(k,ac)).slice(0,18);SKL=sk;COV0=cov(cv);
+ if(!$("#jt").value.trim())$("#jt").value=guessTitle(jd);
+ $("#have").textContent=m.slice(0,30).join(", ")||"none";$("#wds").textContent=WD.join(", ")||"none";const box=$("#miss");box.textContent="";if(!sk.length)box.textContent="No missing skills found.";
+ sk.forEach(k=>{const d=document.createElement("div"),l=document.createElement("label"),i=document.createElement("input"),t=document.createElement("input");d.className="it";d.dataset.k=k;i.type="checkbox";l.append(i," "+k);
+  t.type="text";t.hidden=true;t.placeholder="Optional detail, e.g. led an SAP rollout across 3 sites";i.onchange=()=>t.hidden=!i.checked;d.append(l,t);box.appendChild(d)});
+ $("#r2").hidden=$("#r3").hidden=false;rewriteNow()};
+$("#ta").onclick=()=>document.querySelectorAll("#miss .it").forEach(d=>{d.querySelector("input").checked=true;d.querySelector("input[type=text]").hidden=false});
+function rewriteNow(){if(!Object.keys(K).length){alert("Click Analyse first.");return}const md=rewrite(toMd($("#cv").value),conf(),$("#jd").value,$("#cv").value,K);$("#st").textContent=" Rewritten. Review it in step 5.";show(md,1)}
+$("#rw").onclick=rewriteNow;$("#rw2").onclick=rewriteNow;
+async function ai(p,key,model){for(let t=0;;t++){const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify({contents:[{parts:[{text:p}]}]})});
+ const j=await r.json().catch(()=>({})),m=j.error&&j.error.message||r.status;if(r.ok)return j.candidates[0].content.parts.map(q=>q.text||"").join("");
+ if(t<2&&(r.status==503||r.status==429||/demand|overload|unavailable/i.test(String(m)))){await new Promise(z=>setTimeout(z,3000*(t+1)));continue}throw new Error(m)}}
+const busy=e=>/demand|overload|unavailable|quota|429|503/i.test(e.message)?" Google's free model is busy right now. Wait a minute and click again, or type another Flash model name in the AI model box.":" AI failed ("+e.message+"). Check the key or model name, or use Copy AI prompt.";
+const prompt=cf=>`You are an expert UK CV writer. Rewrite the CV into a polished, professional resume that matches the job description and passes ATS keyword checks.
+RULES:
+1. Use ONLY facts, employers, dates and numbers in the CV or in the CONFIRMED details. Never invent employers, dates, numbers or results.
+2. MISSING SKILLS: for each one, REFINE an EXISTING sentence or bullet so it names the skill, but ONLY where the CV's experience genuinely supports it. Add it to KEY SKILLS too. If the CV gives no support and the skill is not CONFIRMED, do NOT add it anywhere.
+3. CONFIRMED skills are ones the candidate says they have: include them in KEY SKILLS and attach each to the most relevant role as a reworded bullet.
+4. JOB WORDS: reword existing sentences to use these naturally where truthful. Never add new facts.
+5. Write a 3 to 4 sentence SUMMARY for this exact job. Put the most relevant achievements first, start bullets with strong verbs, keep every number, use fewer bullets for older roles.
+6. KEY SKILLS: 3 to 5 lines "Category: skill, skill, skill" (maximum 22).
+7. British English, maximum 2 pages, plain ATS-friendly text.
+OUTPUT: the resume only: "# Full Name", contact line, "## SUMMARY", "## KEY SKILLS", "## EXPERIENCE" (role lines "### Title | Company | Dates", bullets "- text"), "## EDUCATION", "## CERTIFICATIONS". Then a line containing only ===== and "NOT ADDED:" followed by missing skills you did not add.
+MISSING SKILLS:
+${SKL.map(k=>{const c=cf.find(q=>q.k==k);return "- "+k+(c?" [CONFIRMED"+(c.e?": "+c.e:"")+"]":"")}).join("\n")||"none"}
+JOB WORDS: ${WD.join(", ")||"none"}
+CV:
+${reflow($("#cv").value).join("\n")}
+JOB DESCRIPTION:
+${$("#jd").value}`;
+const show=(md,quiet)=>{const q=norm(md).split(/^\s*={3,}\s*$/m),g=(q[1]||"").replace(/^\s*NOT ADDED:?/i,"").trim();$("#out").value=q[0].trim();$("#gp").textContent=g?"Not added, because your resume does not support them (tick them in step 3 if true for you): "+g:"";$("#r4").hidden=false;draw();if(!quiet)$("#r4").scrollIntoView({behavior:"smooth"})};
+const cpy=async(p,st)=>{try{await navigator.clipboard.writeText(p);st.textContent=" Prompt copied. Paste it into an AI chat, then paste the reply into the box."}catch(e){st.textContent=" Copy failed."}};
+const gen=async(p,done,st)=>{const key=$("#key").value.trim();if(!key){st.textContent=" Add a free Gemini key in step 4, or use Copy AI prompt.";return}st.textContent=" Writing…";try{done(await ai(p,key,$("#mod").value.trim()));st.textContent=" Done. Read it and edit anything you cannot defend."}catch(e){st.textContent=busy(e)}};
+$("#cp").onclick=()=>cpy(prompt(conf()),$("#st"));$("#bd").onclick=()=>gen(prompt(conf()),t=>show(t),$("#st"));
+function draw(){const md=norm($("#out").value),T=TPL[$("#tp").value],o=document.createElement("div");o.style.cssText=`font:${T.b/2}pt ${T.f};line-height:1.35`;let k=0;
+ const flex=(a,d)=>{const e=el("div","","display:flex;justify-content:space-between;gap:10px;margin-top:6px");e.append(el("b",a),el("span",d));return e};
+ md.split("\n").forEach(l=>{if(!l.trim())return;k++;let e;
+  if(l.startsWith("# "))e=el("div",l.slice(2),`font-size:${T.n/2}pt;font-weight:700;color:#${T.c};text-align:${T.al}`);
+  else if(l.startsWith("## "))e=el("div",l.slice(3).toUpperCase(),`font-weight:700;color:#${T.c};${T.rule?`border-bottom:1px solid #${T.c};`:""}margin:12px 0 4px`);
+  else if(l.startsWith("### ")){const r=role(l.slice(4));e=flex(r.t,r.d);if(r.c){const c=el("div",r.c,"font-style:italic;color:#444");o.appendChild(e);e=c}}
+  else if(l.startsWith("- "))e=el("div","• "+l.slice(2),"padding-left:14px;text-indent:-10px;margin:1px 0");
+  else{const q=k>2&&lab(l);e=el("div","",k==2?`text-align:${T.al}`:"margin:2px 0");if(q)e.append(el("b",q[0]),q[1]);else e.textContent=l}
+  o.appendChild(e)});
+ const pv=$("#pv");pv.textContent="";pv.appendChild(o);["r5","r6"].forEach(i=>$("#"+i).hidden=!md.trim());letter();
+ const ks=Object.keys(K),left=ks.filter(q=>!has(md,q)).slice(0,12),now=cov(md);
+ $("#cov").textContent=ks.length?`Keyword match: ${COV0}% before, ${now}% after.`+(left.length?` Still missing: ${left.join(", ")}. If any are true for you, tick them in step 3 and rewrite again.`:" All job keywords appear."):"";
+ $("#sc").textContent=ks.length?`Keyword match for this job: ${COV0}% before, ${now}% after your rewritten resume (see step 5).`:"";
+ const wc=words(md).length,nm=(md.match(/\d+%|[£$€]\s?\d|\b\d{2,}\b/g)||[]).length,ck=[[/@/.test(md),"Email present"],[/\+?\d[\d\s()-]{8,}/.test(md),"Phone present"],[/^## .*EXPERIENCE/im.test(md),"Experience heading"],[/^## .*EDUCATION/im.test(md),"Education heading"],[/^## .*SKILLS/im.test(md),"Skills section"],[wc>=300&&wc<=900,"Length "+wc+" words (aim 300 to 900)"],[nm>=8,"Numbers and results: "+nm+" (aim 8+)"]],u=$("#ck");
+ u.textContent="";ck.forEach(([ok,t])=>{const li=document.createElement("li");li.textContent=(ok?"✔ ":"✘ ")+t;u.appendChild(li)})}
+$("#out").oninput=draw;$("#lt").oninput=letter;$("#tp").onchange=draw;$("#pd").onclick=()=>window.print();
+const dl=(b,n)=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;a.click()};
+$("#tx").onclick=()=>dl(new Blob([$("#out").value],{type:"text/plain"}),"resume.txt");
+const word=async(md,L,n)=>{try{if(!window.JSZip)await lib("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");const z=await docx(md,TPL[$("#tp").value],L);dl(await z.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),n)}catch(e){alert("Could not create the Word file. Use Save as PDF instead.")}};
+$("#dx").onclick=()=>word(norm($("#out").value),0,"resume.docx");
+const cvt=()=>$("#out").value.trim()||reflow($("#cv").value).join("\n");
+const cm=()=>{const [c,m]=($("#co").value||"").split(",").map(x=>x.trim());return[c||"",m||""]};
+const lprompt=()=>`Write a UK cover letter for the job below, using ONLY facts from the CV. Maximum 300 words in 4 short paragraphs. Open with the role and one honest reason for interest. Connect the 3 or 4 strongest matching achievements (keep their numbers) to the job's requirements, using the job's keywords only where true. Close with a clear call to action. British English, no clichés, no markdown. Start with "Dear ${cm()[1]||"Hiring Manager"}," and end with "Yours sincerely," and the candidate's name. Output only the letter.\nCOMPANY: ${cm()[0]||"not given"}\nCV:\n${cvt()}\nJOB DESCRIPTION:\n${$("#jd").value}`;
+const iprompt=()=>`Based on the CV and job description, list the 10 most likely interview questions (competency, technical, and 2 tough questions about any gap or career break in the CV). For each give a short STAR-style answer outline using ONLY facts from the CV, plus one tip. Then list 5 smart questions to ask. British English, plain text, no markdown.\nCV:\n${cvt()}\nJOB DESCRIPTION:\n${$("#jd").value}`;
+$("#cl").onclick=()=>{$("#lt").value=letterRB($("#out").value,$("#jd").value,$("#cv").value,K,cm()[0],cm()[1]);letter();$("#s5").textContent=" Generated. Edit it, then download."};
+$("#cla").onclick=()=>gen(lprompt(),t=>{$("#lt").value=norm(t);letter()},$("#s5"));$("#clp").onclick=()=>cpy(lprompt(),$("#s5"));
+$("#iv").onclick=()=>{$("#it").value=interviewRB($("#out").value,$("#jd").value,$("#cv").value,K);$("#s6").textContent=" Generated."};
+$("#iva").onclick=()=>gen(iprompt(),t=>{$("#it").value=norm(t)},$("#s6"));$("#ivp").onclick=()=>cpy(iprompt(),$("#s6"));
+function letterMd(){const R=$("#out").value.split("\n").filter(l=>l.trim()),nm=(R[0]||"").replace(/^#\s*/,""),ct=R[1]&&!/^#/.test(R[1])?R[1]:"";return `# ${nm}\n${ct}\n${new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}\n${$("#lt").value.trim().replace(/\n{2,}/g,"\n")}`}
+function letter(){const T=TPL[$("#tp").value],v=$("#lv");v.style.cssText=`font:${T.b/2}pt ${T.f};white-space:pre-wrap;line-height:1.5`;v.textContent=letterMd().replace(/^# /,"")}
+$("#ldx").onclick=()=>word(letterMd(),1,"cover-letter.docx");
+$("#lpd").onclick=()=>{letter();document.body.classList.add("pl");window.print();setTimeout(()=>document.body.classList.remove("pl"),800)};
+const yt=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q),vl=$("#vl"),vg=$("#vg");
+POS.forEach(p=>{const a=el("a","▶ "+p);a.href=yt(p+" interview questions and answers");a.target="_blank";a.rel="noopener";vl.appendChild(a)});
+vg.appendChild(el("h3","General interview videos"));["how to answer tell me about yourself","STAR method interview answers examples","video interview tips","telephone interview tips","assessment centre tips","salary negotiation UK","questions to ask at the end of an interview"].forEach(q=>{const a=el("a","▶ "+q);a.href=yt(q);a.target="_blank";a.rel="noopener";const d=document.createElement("div");d.appendChild(a);vg.appendChild(d)});
+</script></body></html>
