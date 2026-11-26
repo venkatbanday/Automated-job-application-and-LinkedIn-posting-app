@@ -15,9 +15,39 @@ nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}nav button{margin:0;b
 .kb{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}.col{min-width:200px;flex:1;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:8px}.col h3{margin:0 0 6px}.cd{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:8px;margin:6px 0;font-size:.85rem}.cd input{padding:3px;margin:2px 0;font-size:.8rem}
 .tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.85rem}th,td{border-bottom:1px solid var(--bd);padding:5px;text-align:left;vertical-align:top}.due{color:var(--bad);font-weight:600}.ok{color:var(--ok)}
 pre{white-space:pre-wrap;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:9px;margin:6px 0;font:inherit}.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--a2)}
-</style></head><body><div class="w">
+</style>
+<style>
+:root{--suite-bg:#f4f7fb;--suite-card:#fff;--suite-text:#17243a;--suite-muted:#617089;--suite-line:#dce4ef;--suite-accent:#2457a6}
+:root[data-theme="dark"]{color-scheme:dark;--suite-bg:#0d1523;--suite-card:#151f30;--suite-text:#e8eef8;--suite-muted:#a8b5c9;--suite-line:#2b3a52;--suite-accent:#8db7ff}
+:root[data-theme="light"]{color-scheme:light;--bg:#f6f7fb;--cd:#fff;--card:#fff;--tx:#1b2433;--mu:#5b6678;--bd:#d9deea;--ac:#1f3864;--a2:#2f5fb3;--ok:#1d7a46;--bad:#b3261e;--warn:#9a6700}
+:root[data-theme="dark"]{--bg:#0f1420;--cd:#171e2e;--card:#171e2e;--tx:#e6eaf3;--mu:#9aa6bd;--bd:#2a3550;--ac:#8fb0ee;--a2:#6f9be8;--ok:#58c486;--bad:#ff8a80;--warn:#e3b341}
+body{background:var(--suite-bg)!important;color:var(--suite-text)!important}
+.suite-header{max-width:1200px;margin:0 auto;padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--suite-line)}
+.suite-brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--suite-text);min-width:155px}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#14345f,#4b83d5);color:white;display:grid;place-items:center;font-weight:800}
+.suite-brand small{display:block;color:var(--suite-muted);font-size:11px}
+.suite-nav{display:flex;gap:4px;flex-wrap:wrap}.suite-nav a{padding:7px 9px;border-radius:8px;text-decoration:none;color:var(--suite-muted);font-size:12px}
+.suite-nav a:hover,.suite-nav a:focus{background:var(--suite-card);color:var(--suite-accent)}
+.theme-toggle{border:1px solid var(--suite-line);background:var(--suite-card);color:var(--suite-text);padding:7px 10px;border-radius:9px;cursor:pointer;font:inherit}
+.skip-link{position:absolute;left:-9999px}.skip-link:focus{left:12px;top:12px;z-index:9999;background:var(--suite-card);padding:10px}
+@media(max-width:760px){.suite-header{align-items:flex-start}.suite-nav{order:3;width:100%}.suite-nav a{font-size:11px;padding:6px}}
+</style>
+<script>
+(()=>{const key='careeros_theme';try{const saved=localStorage.getItem(key);document.documentElement.dataset.theme=saved||'light'}catch(e){}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('.theme-toggle');if(b)b.addEventListener('click',()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem(key,n)}catch(e){}});const m=document.querySelector('main,.wrap,.w');if(m&&!m.id)m.id='main-content';});})();
+</script>
+
+</head><body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="suite-header">
+<a class="suite-brand" href="index.html"><span class="brand-mark">CO</span><span><b>CareerOS</b><small>Free Career & Job Search Suite</small></span></a>
+<nav class="suite-nav" aria-label="Main navigation">
+<a href="index.html">Dashboard</a><a href="career-hub.html">Career Hub</a><a href="toolkit.html">CV Match</a><a href="job-fit.html">Job Fit AI</a><a href="resume-builder.html">Resume Studio</a><a href="interview-coach.html">Interview Coach</a><a href="linkedin-post.html">LinkedIn Studio</a><a href="carousel-studio.html">Carousel</a><a href="data-tools.html">Data</a>
+</nav><button class="theme-toggle" type="button">◐ Theme</button></header>
+<div class="w">
 <h1>Career Hub</h1>
-<p class="n"><a href="index.html">Toolkit</a> · <a href="resume-builder.html">Resume tool</a> · <a href="linkedin-post.html">LinkedIn posts</a> · Career Hub. Free. Your data stays in this browser: download a backup now and then.</p>
+<p class="n"><a href="index.html">Dashboard</a> · <a href="toolkit.html">CV Match</a> · <a href="resume-builder.html">Resume tool</a> · <a href="linkedin-post.html">LinkedIn posts</a> · Career Hub. Free. Your data stays in this browser: download a backup now and then.</p>
 
 <div class="c"><h2>Your details (saved in this browser)</h2>
 <div class="g"><div><label for="p_name">Your name</label><input id="p_name"></div><div><label for="p_li">LinkedIn link or id</label><input id="p_li" placeholder="linkedin.com/in/your-id"></div><div><label for="p_role">Target role</label><input id="p_role" placeholder="Senior Programme Manager"></div>
@@ -99,7 +129,7 @@ function jobs(){const f=card("Add a job",el("div",{className:"g"},...[["t","Job 
   S.jobs.filter(j=>j.s==si).forEach(j=>{const mv=d=>()=>{j.s=Math.max(0,Math.min(6,j.s+d));if(j.s<6)j.mx=Math.max(j.mx||0,j.s);save();go("jobs")},due=j.fu&&j.fu<=TODAY()&&j.s<5;
    col.appendChild(el("div",{className:"cd"},el("b",{textContent:j.t||"(no title)"}),el("div",{textContent:j.c+" · "+j.ch}),j.l&&/^https?:/i.test(j.l)?el("a",{href:j.l,target:"_blank",rel:"noopener",textContent:"open link"}):"",
     el("label",{textContent:"Interview date"}),el("input",{type:"date",value:j.iv||"",on:{change:e=>{j.iv=e.target.value;save()}}}),el("label",{textContent:"Follow-up date"+(due?" (due)":"")}),el("input",{type:"date",value:j.fu||"",on:{change:e=>{j.fu=e.target.value;save()}}}),
-    el("input",{value:j.n||"",placeholder:"Notes",on:{change:e=>{j.n=e.target.value;save()}}}),el("button",{className:"o",textContent:"◀",on:{click:mv(-1)}}),el("button",{className:"o",textContent:"▶",on:{click:mv(1)}}),el("button",{className:"o",textContent:"✕",on:{click:()=>{S.jobs=S.jobs.filter(x=>x!==j);save();go("jobs")}}})))});kb.appendChild(col)});
+    el("input",{value:j.n||"",placeholder:"Notes",on:{change:e=>{j.n=e.target.value;save()}}}),el("button",{className:"o",textContent:"◀",on:{click:mv(-1)}}),el("button",{className:"o",textContent:"▶",on:{click:mv(1)}}),el("button",{className:"o",textContent:"Edit",on:{click:()=>{const t=prompt("Job title",j.t||"");if(t===null)return;const c=prompt("Company",j.c||"");if(c===null)return;const l=prompt("Job URL",j.l||"");if(l===null)return;const n=prompt("Notes",j.n||"");if(n===null)return;j.t=t.trim();j.c=c.trim();j.l=l.trim();j.n=n.trim();save();go("jobs")}}}),el("button",{className:"o",textContent:"✕",on:{click:()=>{if(!confirm("Delete this job record?"))return;S.jobs=S.jobs.filter(x=>x!==j);save();go("jobs")}}})))});kb.appendChild(col)});
  card("Your pipeline",kb)}
 function rec(){const p=S.p,role=p.role||"programme manager",loc=p.loc||"London",kw0=(p.kw||"").split(",")[0].trim(),LI="https://www.linkedin.com/search/results/people/?keywords=",G="https://www.google.com/search?q=";
  const L=[["Recruiters hiring for "+role,LI+e2("recruiter "+role+" "+loc)],["Recruitment consultants: "+(kw0||role),LI+e2("recruitment consultant "+(kw0||role)+" "+loc)],["Hiring managers (heads and directors)",LI+e2("head of "+role+" "+loc)],["Open jobs for "+role,"https://www.linkedin.com/jobs/search/?keywords="+e2(role)+"&location="+e2(loc)],["Google: recruiter profiles",G+e2('site:linkedin.com/in ("recruiter" OR "talent acquisition") "'+role+'" '+loc)]];
@@ -112,7 +142,7 @@ function rec(){const p=S.p,role=p.role||"programme manager",loc=p.loc||"London",
  const tb=el("table",{},el("tr",{},["Name","Company","Status","Last","Next follow-up","Actions"].map(x=>el("th",{textContent:x}))));
  S.cons.forEach(c=>{const due=c.s==1&&c.next&&c.next<=TODAY();tb.appendChild(el("tr",{},el("td",{},c.l&&/^https?:/i.test(c.l)?el("a",{href:c.l,target:"_blank",rel:"noopener",textContent:c.n}):c.n),el("td",{textContent:c.c+(c.r?" · "+c.r:"")}),
   el("td",{},el("select",{on:{change:e=>{c.s=+e.target.value;save();go("rec")}}},CST.map((x,i)=>el("option",{value:i,textContent:x,selected:i==c.s})))),el("td",{textContent:c.last||""}),el("td",{className:due?"due":"",textContent:(c.next||"")+(due?" (due)":"")}),
-  el("td",{},el("button",{className:"o",textContent:"Messaged",on:{click:()=>{c.s=Math.max(c.s,1);c.last=TODAY();c.next=addD(TODAY(),7);c.f=(c.f||0)+(c.s>=1&&c.last?0:0);save();go("rec")}}}),el("button",{className:"o",textContent:"✕",on:{click:()=>{S.cons=S.cons.filter(x=>x!==c);save();go("rec")}}}))))});
+  el("td",{},el("button",{className:"o",textContent:"Messaged",on:{click:()=>{c.s=Math.max(c.s,1);c.last=TODAY();c.next=addD(TODAY(),7);c.f=(c.f||0)+(c.s>=1&&c.last?0:0);save();go("rec")}}}),el("button",{className:"o",textContent:"Edit",on:{click:()=>{const n=prompt("Contact name",c.n||"");if(n===null)return;const co=prompt("Company",c.c||"");if(co===null)return;const r=prompt("Role",c.r||"");if(r===null)return;const l=prompt("LinkedIn URL",c.l||"");if(l===null)return;c.n=n.trim();c.c=co.trim();c.r=r.trim();c.l=l.trim();save();go("rec")}}}),el("button",{className:"o",textContent:"✕",on:{click:()=>{if(!confirm("Delete this contact?"))return;S.cons=S.cons.filter(x=>x!==c);save();go("rec")}}}))))});
  card("Your contacts ("+S.cons.length+" of 100)",el("div",{className:"bar"},el("i",{s:"width:"+Math.min(100,S.cons.length)+"%"})),el("div",{className:"tw"},tb),el("button",{className:"o",textContent:"Download CSV",on:{click:()=>dl(new Blob([csv(["Name","Company","Role","Link","Status","Last contacted","Next follow-up"],S.cons.map(c=>[c.n,c.c,c.r,c.l,CST[c.s],c.last,c.next]))],{type:"text/csv"}),"contacts.csv")}}))}
 function msg(){card("Messages you can send",el("p",{className:"n",textContent:"Replace the [brackets]. Keep each message short, specific and polite, and follow up after 7 and 14 days. Never paste the same message to hundreds of people."}),msgs(S.p).map(([t,b])=>el("div",{},el("h3",{textContent:t}),el("pre",{textContent:b}),el("button",{className:"o",textContent:"Copy",on:{click:()=>cp(b)}}))))}
 function prof(){const P=profile(S.p),ta=(id,v,h)=>el("textarea",{id,value:v,s:"min-height:"+h+"px"});

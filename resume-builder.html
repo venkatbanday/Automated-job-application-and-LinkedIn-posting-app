@@ -14,9 +14,39 @@ label{display:block;font-size:.85rem;color:var(--mu);margin:8px 0 3px}button.o{b
 #pv{background:#fff;color:#000;border:1px solid var(--bd);padding:28px;margin-top:12px;overflow-x:auto}
 #lv{background:#fff;color:#000;border:1px solid var(--bd);padding:28px;margin-top:12px}
 @media print{body *{visibility:hidden}#pv,#pv *{visibility:visible}#pv{position:absolute;left:0;top:0;width:100%;border:0;padding:0}body.pl #pv,body.pl #pv *{display:none}body.pl #lv,body.pl #lv *{visibility:visible}body.pl #lv{position:absolute;left:0;top:0;width:100%;border:0;padding:0}}
-</style></head><body><div class="w">
+</style>
+<style>
+:root{--suite-bg:#f4f7fb;--suite-card:#fff;--suite-text:#17243a;--suite-muted:#617089;--suite-line:#dce4ef;--suite-accent:#2457a6}
+:root[data-theme="dark"]{color-scheme:dark;--suite-bg:#0d1523;--suite-card:#151f30;--suite-text:#e8eef8;--suite-muted:#a8b5c9;--suite-line:#2b3a52;--suite-accent:#8db7ff}
+:root[data-theme="light"]{color-scheme:light;--bg:#f6f7fb;--cd:#fff;--card:#fff;--tx:#1b2433;--mu:#5b6678;--bd:#d9deea;--ac:#1f3864;--a2:#2f5fb3;--ok:#1d7a46;--bad:#b3261e;--warn:#9a6700}
+:root[data-theme="dark"]{--bg:#0f1420;--cd:#171e2e;--card:#171e2e;--tx:#e6eaf3;--mu:#9aa6bd;--bd:#2a3550;--ac:#8fb0ee;--a2:#6f9be8;--ok:#58c486;--bad:#ff8a80;--warn:#e3b341}
+body{background:var(--suite-bg)!important;color:var(--suite-text)!important}
+.suite-header{max-width:1200px;margin:0 auto;padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--suite-line)}
+.suite-brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--suite-text);min-width:155px}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#14345f,#4b83d5);color:white;display:grid;place-items:center;font-weight:800}
+.suite-brand small{display:block;color:var(--suite-muted);font-size:11px}
+.suite-nav{display:flex;gap:4px;flex-wrap:wrap}.suite-nav a{padding:7px 9px;border-radius:8px;text-decoration:none;color:var(--suite-muted);font-size:12px}
+.suite-nav a:hover,.suite-nav a:focus{background:var(--suite-card);color:var(--suite-accent)}
+.theme-toggle{border:1px solid var(--suite-line);background:var(--suite-card);color:var(--suite-text);padding:7px 10px;border-radius:9px;cursor:pointer;font:inherit}
+.skip-link{position:absolute;left:-9999px}.skip-link:focus{left:12px;top:12px;z-index:9999;background:var(--suite-card);padding:10px}
+@media(max-width:760px){.suite-header{align-items:flex-start}.suite-nav{order:3;width:100%}.suite-nav a{font-size:11px;padding:6px}}
+</style>
+<script>
+(()=>{const key='careeros_theme';try{const saved=localStorage.getItem(key);document.documentElement.dataset.theme=saved||'light'}catch(e){}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.querySelector('.theme-toggle');if(b)b.addEventListener('click',()=>{const n=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=n;try{localStorage.setItem(key,n)}catch(e){}});const m=document.querySelector('main,.wrap,.w');if(m&&!m.id)m.id='main-content';});})();
+</script>
+
+</head><body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="suite-header">
+<a class="suite-brand" href="index.html"><span class="brand-mark">CO</span><span><b>CareerOS</b><small>Free Career & Job Search Suite</small></span></a>
+<nav class="suite-nav" aria-label="Main navigation">
+<a href="index.html">Dashboard</a><a href="career-hub.html">Career Hub</a><a href="toolkit.html">CV Match</a><a href="job-fit.html">Job Fit AI</a><a href="resume-builder.html">Resume Studio</a><a href="interview-coach.html">Interview Coach</a><a href="linkedin-post.html">LinkedIn Studio</a><a href="carousel-studio.html">Carousel</a><a href="data-tools.html">Data</a>
+</nav><button class="theme-toggle" type="button">◐ Theme</button></header>
+<div class="w">
 <h1>Resume Tailoring Tool</h1>
-<p class="n"><a href="index.html">Toolkit</a> · Resume tool · <a href="linkedin-post.html">LinkedIn posts</a> · <a href="career-hub.html">Career Hub</a></p><p class="n">Upload or paste your resume and a job description, confirm the skills you genuinely have, then download a tailored resume. Free. <a href="index.html">← Job Search Toolkit</a></p>
+<p class="n"><a href="index.html">Dashboard</a> · <a href="toolkit.html">CV Match</a> · Resume tool · <a href="linkedin-post.html">LinkedIn posts</a> · <a href="career-hub.html">Career Hub</a></p><p class="n">Upload or paste your resume and a job description, confirm the skills you genuinely have, then download a tailored resume. Free. <a href="index.html">← Job Search Toolkit</a></p>
 
 <div class="c"><h2>1. Your resume</h2><input type="file" id="f" accept=".docx,.pdf,.txt"><label for="cv">…or paste the text</label><textarea id="cv"></textarea></div>
 <div class="c"><h2>2. Job description</h2><textarea id="jd"></textarea><label for="jt">Job title you are applying for (optional; the tool guesses it from the first line)</label><input id="jt"><button id="an">Analyse and rewrite my resume</button></div>
@@ -272,4 +302,14 @@ $("#lpd").onclick=()=>{letter();document.body.classList.add("pl");window.print()
 const yt=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q),vl=$("#vl"),vg=$("#vg");
 POS.forEach(p=>{const a=el("a","▶ "+p);a.href=yt(p+" interview questions and answers");a.target="_blank";a.rel="noopener";vl.appendChild(a)});
 vg.appendChild(el("h3","General interview videos"));["how to answer tell me about yourself","STAR method interview answers examples","video interview tips","telephone interview tips","assessment centre tips","salary negotiation UK","questions to ask at the end of an interview"].forEach(q=>{const a=el("a","▶ "+q);a.href=yt(q);a.target="_blank";a.rel="noopener";const d=document.createElement("div");d.appendChild(a);vg.appendChild(d)});
-</script></body></html>
+</script>
+<script>
+(()=>{const KEY='careeros_resume_draft_v1';document.addEventListener('DOMContentLoaded',()=>{const ids=['cv','jd','jt'];const get=id=>document.getElementById(id);if(!ids.every(id=>get(id)))return;let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+const bar=document.createElement('div');bar.className='n';bar.style.cssText='padding:8px 10px;border:1px solid var(--bd);border-radius:8px;margin:8px 0';bar.textContent='Resume Studio draft autosave is on for this browser. Your CV and job description stay in local browser storage.';const first=get('cv').closest('.c')||get('cv').parentElement;first.appendChild(bar);
+if(saved&&!get('cv').value&&!get('jd').value){const b=document.createElement('button');b.type='button';b.className='o';b.textContent='Restore last local draft';b.onclick=()=>{ids.forEach(id=>get(id).value=saved[id]||'');bar.textContent='Previous draft restored.'};first.appendChild(b)}
+let timer;const persist=()=>{clearTimeout(timer);timer=setTimeout(()=>{try{const data={savedAt:new Date().toISOString()};ids.forEach(id=>data[id]=get(id).value);localStorage.setItem(KEY,JSON.stringify(data));bar.textContent='Draft saved locally at '+new Date().toLocaleTimeString()+'.'}catch(e){bar.textContent='Local autosave unavailable. Download your work regularly.'}},500)};
+ids.forEach(id=>get(id).addEventListener('input',persist));const clear=document.createElement('button');clear.type='button';clear.className='o';clear.textContent='Clear saved draft';clear.onclick=()=>{if(!confirm('Delete the saved local resume draft?'))return;localStorage.removeItem(KEY);bar.textContent='Saved draft cleared. The current fields remain unchanged.'};first.appendChild(clear);
+})})();
+</script>
+
+</body></html>

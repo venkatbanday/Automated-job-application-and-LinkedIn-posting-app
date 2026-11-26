@@ -1,104 +1,87 @@
-# Free Job Search Toolkit
+# CareerOS — Career & Job Search Suite
 
-Three free tools for job seekers, built with AI and shared to spread knowledge. They run in your browser: no sign-up, no server, no tracking.
+A free, static, browser-based career management application designed for GitHub Pages. It preserves the original job-search toolkit, Career Hub, Resume Tailoring Tool and LinkedIn Post Maker, and adds an evidence-led job-fit review, interview practice, LinkedIn carousel creation, PWA support and cross-tool data backup.
 
-**Live site:** <https://venkatbanday.github.io/Automated-job-application-and-LinkedIn-posting-app/>
+**Live deployment target:** GitHub Pages  
+**Technology:** HTML, CSS and vanilla JavaScript  
+**Backend required:** No  
+**User account required:** No
 
-| Page | What it does |
+## Application pages
+
+| File | Purpose |
 |---|---|
-| `index.html` | **Toolkit home.** CV vs job keyword match, application tracker, outreach messages, a guide on approaching recruiters, and free resources |
-| `resume-builder.html` | **Resume Tailoring Tool.** Upload or paste a resume and a job description, get a tailored resume, a cover letter and interview prep; four templates; download Word, PDF or text |
-| `linkedin-post.html` | **LinkedIn Post Maker.** Write posts with AI, make the image and banner, open LinkedIn with your text ready, plan a week of content |
+| `index.html` | CareerOS dashboard and pipeline summary |
+| `toolkit.html` | Original CV/job keyword match, application tracker and outreach toolkit |
+| `career-hub.html` | Original job pipeline, recruiter contact manager, messages, LinkedIn profile helper and 9-step plan |
+| `job-fit.html` | Evidence-led job suitability assessment, essential criteria review, risks and optional multi-provider AI review |
+| `resume-builder.html` | Original resume tailoring, templates, editing, cover-letter and interview preparation workflow |
+| `interview-coach.html` | Interview question bank, STAR answer builder, local rubric, saved practice and optional AI feedback |
+| `linkedin-post.html` | Original LinkedIn post generator, post graphics, banner and content plan |
+| `carousel-studio.html` | Multi-slide LinkedIn carousel builder and PNG export |
+| `data-tools.html` | Cross-tool JSON backup and restore |
+| `manifest.webmanifest`, `sw.js`, `icon.svg` | PWA install metadata, offline shell and app icon |
 
-## Resume Tailoring Tool
+## Deploy to GitHub Pages
 
-1. Upload a `.docx`, `.pdf` or `.txt` file, or paste your resume text. Paste the job description.
-2. Click **Analyse and rewrite my resume**. It works **instantly with no AI key**: it writes a tailored summary, puts your most relevant achievements first, and builds Key Skills for the job. You see your keyword match before and after.
-3. **Tick the missing skills you genuinely have** (or tick all) and click **Rewrite again**. The tool weaves each one into a matching sentence of your resume where it fits, and adds it to Key Skills, so your match rises.
-4. Optional: **Polish with AI** (free Gemini key) or copy the prompt into any AI chat for smoother wording. The AI adds a skill only where your experience supports it and lists the rest as gaps.
-5. **Style it:** nine templates (Classic, Modern, Executive, Compact, Banner navy, Banner teal, Elegant, Bold, Minimal), your own **accent colour**, a **font** choice, an optional **coloured header banner**, and an optional round **photo** (not usual on UK CVs). Everything shows in a live preview.
-6. **Edit it easily:** the Easy editor lets you change any line, switch it between Section, Role, Bullet and Text, move lines or whole sections up and down, add bullets, add sections and delete lines. A plain Text tab is there too.
-7. Download **Word**, **PDF** (browser print) or **text**. The banner and photo are included in the Word file and the PDF.
-8. **Cover letter:** generated from your rewritten resume and the job description, with Word and PDF download.
-9. **Interview preparation:** likely questions with answer outlines from your own resume, plus YouTube links on how to attend interviews for 18 kinds of position.
+1. Download and extract the release ZIP.
+2. Open the target GitHub repository.
+3. Upload **the contents** of the extracted `CareerOS-GitHub-Final` folder to the repository root (not the enclosing folder).
+4. Commit to the branch selected for GitHub Pages, usually `main`.
+5. Open **Settings → Pages**.
+6. Choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
+7. Wait for the GitHub Pages deployment to finish and open the published URL.
 
-You can paste a job straight from LinkedIn: page clutter (buttons, "people you can reach out to", benefits) is removed automatically, and the job title and company are filled in for you. Lines that look unsuitable for a CV (personal investments, family details) are flagged with a one-click remove button.
+The root `index.html` is the dashboard entry point. If the repository is published as a project site, GitHub Pages serves it at `https://<username>.github.io/<repository>/`.
 
-It also shows the keywords still missing and simple format checks (contact details, headings, length, numbers).
+## How to use
 
-**It never invents employers, dates, numbers or results, and it adds a skill to your sentences only if you tick it.** There is no honest way to reach "100% ATS": no real ATS gives a percentage. Read the result and keep only what you can defend at interview.
+- Start at the dashboard.
+- Track applications and recruiter follow-ups in Career Hub.
+- Use CV Match for keyword comparison, then use Job Fit AI for a deeper evidence review.
+- Tailor your resume in Resume Studio and review every generated statement.
+- Practise competency answers in Interview Coach using the STAR framework.
+- Draft professional posts and banners in LinkedIn Studio; use Carousel Studio for slide sequences.
+- Use Data Tools to export a portable backup before clearing browser data or moving devices.
 
-## Career Hub
+## AI provider configuration
 
-`career-hub.html` is your free job-search control room. Everything stays in your browser, and you can **download a backup** and **restore** it.
+AI actions are optional and require the user's own API key. The AI pages currently offer provider choices where implemented (Gemini, OpenAI and Anthropic in Job Fit / Interview Coach; the original LinkedIn Post Maker uses Gemini). The key is held in the page's JavaScript memory and is not deliberately written to local storage by these new pages.
 
-- **Dashboard:** jobs tracked, applied, interviews, offers, reply rate, follow-ups due today, and which channels bring interviews.
-- **Jobs:** a board with stages (Saved, Applied, Recruiter contacted, Interview, Second interview, Offer, Rejected), interview and follow-up dates, notes and CSV export.
-- **Recruiters:** search links for recruiters, hiring managers and 2nd-degree connections at your target companies (it does not scrape or automate LinkedIn), plus a contact list for 100 people with a 7-day follow-up reminder.
-- **Messages:** eight ready messages (connection request, follow-ups at 7 and 14 days, advice request, introduction request, thank you).
-- **LinkedIn profile:** headline options, an About draft, skills and a recruiter-search checklist, drafted from your resume text.
-- **9-step plan:** brand, profile, 100 contacts, contact details the right way, outreach, tailored CV and letter, warm applications, model answers, practice.
+**Security note:** Browser-only AI integrations cannot keep an API key secret from the person using the browser or from browser extensions/devtools. Use a dedicated key with strict provider-side limits and monitor usage. For a public multi-user production service, route AI calls through a serverless backend with authentication, rate limits and secret storage. Do not commit API keys to GitHub.
 
-## LinkedIn Post Maker
+## Privacy and data
 
-- Enter your name, role, audience and LinkedIn profile link or id (stored only in your browser).
-- Add your real facts or idea, or paste your resume so the AI picks real achievements. Choose post type, tone, length, hashtags and emojis, and get three versions.
-- Make a designed image (four styles, three sizes, optional photo) and a **LinkedIn banner** (1584×396), and download them as PNG.
-- **Copy text and open LinkedIn** opens LinkedIn's own composer. Attach the image and press Post.
-- Create a seven-day content plan from the same facts.
+- Career Hub data is stored in browser local storage under `ch`.
+- The original toolkit and LinkedIn studio also use browser local storage.
+- Data Tools exports CareerOS-owned local storage keys into a JSON backup. Treat that file as sensitive because it can contain CV text, contact details and job-search notes.
+- No server-side account or cloud sync is included.
+- Clearing browser data may permanently remove local records if no backup exists.
+- Optional AI calls send the text required for the selected action to the chosen AI provider. Do not send confidential employer, client or third-party personal data without authorisation.
 
-**Why there is no one-click auto-post:** posting for you needs a LinkedIn-approved integration with your login, which a free static page cannot do safely, and bots risk account restrictions. The tool also cannot read your profile from LinkedIn.
+## Important limitations
 
-## Free resources
+- Keyword match percentages and job-fit indicators are heuristic decision aids, not actual ATS scores, hiring probabilities or guarantees.
+- AI-generated content must be reviewed. The application is designed not to encourage fabricated achievements, credentials or metrics.
+- LinkedIn publishing remains user-controlled. The app does not scrape LinkedIn or auto-send connection requests or posts.
+- Offline mode caches the static application shell. AI provider calls, external links and some browser export functions require internet access or browser support.
+- PDF output uses the browser's print-to-PDF workflow where the original tool provides it. Word export and document formatting should be checked in Microsoft Word or LibreOffice.
+- The browser-only application does not provide multi-device sync or team collaboration.
 
-The Toolkit home page has a **Free resources** tab: resume tools, AI assistants, LinkedIn tools, interview practice, UK job sites, and YouTube searches for interview videos for your target role. Free plans change, so check each site.
+## Testing
 
-## AI key (free)
+A lightweight smoke test is provided at `tests/smoke-test.mjs`. Run:
 
-AI features use Google's Gemini API with **your own free key**:
+```bash
+node tests/smoke-test.mjs
+```
 
-1. Open [aistudio.google.com](https://aistudio.google.com) and click **Get API key**.
-2. Paste it into the key box on the page. It is kept in the page only, not saved.
-3. The default model is `gemini-3.1-flash-lite`. If Google renames it, edit the **AI model** box.
+The GitHub Actions workflow runs the smoke test on pushes and pull requests. The smoke test validates the expected application files, internal page links, manifest and JavaScript parseability. It is not a substitute for manual browser testing of AI calls, downloads, PWA installation or real user workflows.
 
-No key? Use **Copy prompt** and paste it into any AI chat.
+## Release
 
-Free-tier limits apply, and Google may use free-tier content to improve its products. Do not paste anything confidential.
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
-## Privacy
+## License
 
-- Your resume, tracker rows and LinkedIn details stay in your browser (localStorage). Nothing is uploaded to this site.
-- Text is sent to Google only when you use the AI button with your own key.
-- Resume upload and Word export load three libraries from the jsDelivr CDN: mammoth 1.6.0, pdf.js 3.11.174 and JSZip 3.10.1. You need an internet connection for those.
-
-## Put it on GitHub Pages
-
-1. Create a repository, for example `Automated-job-application-and-LinkedIn-posting-app`.
-2. Upload `index.html`, `resume-builder.html`, `linkedin-post.html` and this `README.md` to the main branch, keeping them in the same folder.
-3. Open **Settings → Pages**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, and save.
-4. After a minute the site is at `https://<your-username>.github.io/<repo-name>/`.
-5. After changing a file, refresh with Ctrl+F5 to avoid seeing an old cached copy.
-
-## Limits
-
-- Keyword matching is a guide, not a real ATS score.
-- Scanned PDFs and old `.doc` files cannot be read. Paste the text instead.
-- Banner styles use a coloured header block, so for the strictest ATS systems use Classic, Modern or Minimal.
-- Uploaded PDFs sometimes split words; check the text box before downloading.
-- Images are designed cards made from text, not AI-generated photos.
-- Tested in code and sample files. Please report anything that looks wrong.
-
-## Tips for job seekers
-
-Targeted messages and referrals usually beat mass applications. Never pay anyone to be placed in a job, and never add skills you do not have.
-
-## About the builder
-
-**Venkateswararao Banday**: multi-sector programme and operations leader with the right to work in the UK and India, looking for roles in London. I build apps with AI and share them free. If this helped you and you can refer me to any opportunity, I would be very grateful.
-
-- WhatsApp: [+91 9962507575](https://wa.me/919962507575) · [+44 7391 522993](https://wa.me/447391522993)
-- LinkedIn: [linkedin.com/in/venkateswararao-banday](https://www.linkedin.com/in/venkateswararao-banday)
-
-## Licence
-
-Choose a licence when you publish (MIT is a common choice for free tools) and add it as a `LICENSE` file.
+MIT. See [LICENSE](LICENSE).
